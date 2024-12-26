@@ -2,5 +2,5 @@
 
 return [
     'secret' => env('JWT_SECRET'),
-    'ttl' => env('JWT_TTL', 3600),
+    'ttl' => env('JWT_TTL', 60 * 60 * 24),
 ];

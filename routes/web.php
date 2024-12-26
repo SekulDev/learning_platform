@@ -1,6 +1,7 @@
 <?php
 
-use App\Infrastructure\Http\Middleware\JwtAuthMiddleware;
+use App\Auth\Infrastructure\Http\Controllers\AuthController;
+use App\Auth\Infrastructure\Http\Middleware\WebJwtAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,7 +18,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(JwtAuthMiddleware::class)->group(function () {
+Route::middleware(WebJwtAuthMiddleware::class)->group(function () {
 //    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -35,7 +36,8 @@ Route::middleware('guest')->group(function () {
 //    Route::post('login', [AuthenticatedSessionController::class, 'store']);
 });
 
-Route::middleware(JwtAuthMiddleware::class)->group(function () {
+Route::middleware(WebJwtAuthMiddleware::class)->group(function () {
+    Route::get('auth/me', [AuthController::class, 'me']);
 //    Route::get('verify-email', EmailVerificationPromptController::class)
 //        ->name('verification.notice');
 //

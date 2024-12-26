@@ -1,7 +1,7 @@
 <?php
 
-use App\Infrastructure\Http\Controllers\AuthController;
-use App\Infrastructure\Http\Middleware\JwtAuthMiddleware;
+use App\Auth\Infrastructure\Http\Controllers\AuthController;
+use App\Auth\Infrastructure\Http\Middleware\JwtAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api')->group(function () {
