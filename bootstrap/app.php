@@ -36,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\App\Common\Domain\Exceptions\HttpException $e, Request $request) {
             if ($request->is('api/*')) {
-                return response()->json(['error' => $e->getMessage()], $e->getStatusCode());
+                return response()->json(['error' => $e->getMessage(), 'status_code' => $e->getStatusCode()], $e->getStatusCode());
             } else {
                 if ($e->getStatusCode() == 404) {
                     abort(404);
