@@ -31,7 +31,7 @@ class JwtAuthMiddleware
                 throw AuthenticationException::invalidToken();
             }
 
-            auth()->setUser(UserDTO::fromEntity($user));
+            auth()->setUser($user);
             return $next($request);
         } catch (AuthenticationException $e) {
             return response()->json(['error' => $e->getMessage()], 401);

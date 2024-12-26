@@ -3,9 +3,8 @@
 namespace App\Domain\Dto\Auth;
 
 use App\Domain\Entities\User;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class UserDTO extends Authenticatable
+class UserDTO
 {
 
     public function __construct(

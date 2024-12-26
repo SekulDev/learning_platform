@@ -4,8 +4,9 @@ namespace App\Domain\Entities;
 
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\Password;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User
+class User extends Authenticatable
 {
     private function __construct(
         private int $id,
