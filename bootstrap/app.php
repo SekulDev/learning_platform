@@ -39,7 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     return response()->redirectTo('/login');
                 } else {
                     // temporary
-                    abort(500);
+                    abort($e->getStatusCode());
                 }
             }
         });
