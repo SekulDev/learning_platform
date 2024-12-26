@@ -13,15 +13,15 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->priority([
-            \App\Common\Infrastructure\Middleware\TrustProxies::class,
-            \App\Common\Infrastructure\Middleware\EncryptCookies::class,
-            \App\Common\Infrastructure\Middleware\HandleInertiaRequests::class,
+            \App\Common\Infrastructure\Http\Middleware\TrustProxies::class,
+            \App\Common\Infrastructure\Http\Middleware\EncryptCookies::class,
+            \App\Common\Infrastructure\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
         $middleware->web(append: [
-            \App\Common\Infrastructure\Middleware\TrustProxies::class,
-            \App\Common\Infrastructure\Middleware\EncryptCookies::class,
-            \App\Common\Infrastructure\Middleware\HandleInertiaRequests::class,
+            \App\Common\Infrastructure\Http\Middleware\TrustProxies::class,
+            \App\Common\Infrastructure\Http\Middleware\EncryptCookies::class,
+            \App\Common\Infrastructure\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
         //
