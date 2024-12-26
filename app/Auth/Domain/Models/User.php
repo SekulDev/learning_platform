@@ -14,7 +14,7 @@ class User extends AggregateRoot
         private string   $name,
         private Email    $email,
         private Password $password,
-        private array    $roles = [],
+        private array    $roles = ['user'],
         private ?string  $provider = null,
         private ?string  $providerId = null)
     {
@@ -33,7 +33,7 @@ class User extends AggregateRoot
         Email  $email,
         string $provider,
         string $providerId,
-        array  $roles = []
+        array  $roles = ['user']
     ): self
     {
         return new self(

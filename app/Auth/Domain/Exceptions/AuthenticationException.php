@@ -20,4 +20,9 @@ class AuthenticationException extends \Exception
     {
         return new UnauthorizedException("Authentication failed with provider: {$provider}. {$message}");
     }
+
+    public static function userExists(string $email): UnauthorizedException
+    {
+        return new UnauthorizedException("User with email: {$email} already exists");
+    }
 }

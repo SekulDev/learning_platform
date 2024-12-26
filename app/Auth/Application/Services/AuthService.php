@@ -5,18 +5,22 @@ namespace App\Auth\Application\Services;
 use App\Auth\Domain\Dto\AuthResponseDTO;
 use App\Auth\Domain\Dto\UserDTO;
 use App\Auth\Domain\Exceptions\AuthenticationException;
+use App\Auth\Domain\Models\User;
 use App\Auth\Domain\Repositories\UserRepository;
 use App\Auth\Domain\Services\OAuthService;
 use App\Auth\Domain\Services\TokenService;
 use App\Common\Domain\ValueObjects\Email;
+use App\Common\Domain\ValueObjects\Password;
 
 class AuthService
 {
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly TokenService   $tokenService,
-        private readonly OAuthService $oauthService
-    ) {}
+        private readonly OAuthService   $oauthService
+    )
+    {
+    }
 
     public function authenticate(string $email, string $password): AuthResponseDTO
     {
@@ -30,7 +34,8 @@ class AuthService
         return new AuthResponseDTO($token);
     }
 
-    public function redirectToProvider(string $provider): string {
+    public function redirectToProvider(string $provider): string
+    {
         return $this->oauthService->getAuthorizationUrl($provider);
     }
 
@@ -38,6 +43,20 @@ class AuthService
     {
         $userDTO = $this->oauthService->handleCallback($provider, $code);
         $token = $this->createTokenForUser($userDTO);
+        return new AuthResponseDTO($token);
+    }
+
+    public function register(string $name, string $email, string $password): AuthResponseDTO
+    {
+        $user = $this->userRepository->findByEmail(new Email($email));
+        if ($user) {
+            throw AuthenticationException::userExists($email);
+        }
+
+        $user = new User(0, $name, new Email($email), Password::fromPlaintext($password));
+        $user = $this->userRepository->save($user);
+
+        $token = $this->createTokenForUser(UserDTO::fromUser($user));
         return new AuthResponseDTO($token);
     }
 

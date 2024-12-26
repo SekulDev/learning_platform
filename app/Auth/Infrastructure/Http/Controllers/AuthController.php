@@ -4,6 +4,7 @@ namespace App\Auth\Infrastructure\Http\Controllers;
 
 use App\Auth\Application\Services\AuthService;
 use App\Auth\Infrastructure\Http\Requests\LoginRequest;
+use App\Auth\Infrastructure\Http\Requests\RegisterRequest;
 use App\Common\Domain\Exceptions\BadRequestException;
 use App\Common\Infrastructure\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
@@ -12,11 +13,24 @@ class AuthController extends Controller
 {
     public function __construct(
         private AuthService $authService
-    ) {}
+    )
+    {
+    }
 
     public function login(LoginRequest $request): JsonResponse
     {
         $authResponse = $this->authService->authenticate(
+            $request->email,
+            $request->password
+        );
+
+        return response()->json($authResponse->toArray())->cookie(cookie('jwt', $authResponse->accessToken, $authResponse->expiresIn));
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $authResponse = $this->authService->register(
+            $request->name,
             $request->email,
             $request->password
         );
