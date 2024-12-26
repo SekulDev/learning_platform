@@ -1,12 +1,11 @@
 <?php
 
 use App\Auth\Infrastructure\Http\Controllers\AuthController;
-use App\Auth\Infrastructure\Http\Middleware\JwtAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api')->group(function () {
     Route::prefix('auth')->group(function () {
-        Route::middleware(JwtAuthMiddleware::class)->group(function () {
+        Route::middleware('auth')->group(function () {
             Route::get('me', [AuthController::class, 'me']);
             Route::post('logout', [AuthController::class, 'logout']);
         });
