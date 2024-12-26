@@ -11,8 +11,9 @@ class JwtTokenService implements TokenService
 
     public function __construct(
         private readonly string $secret,
-        private readonly int $ttl = 3600
-    ) {
+        private readonly int    $ttl = 60 * 60 * 24 * 7
+    )
+    {
     }
 
     public function createToken(array $payload): string
@@ -26,7 +27,7 @@ class JwtTokenService implements TokenService
     public function validateToken(string $token): ?array
     {
         try {
-            return (array) JWT::decode($token, new Key($this->secret, 'HS256'));
+            return (array)JWT::decode($token, new Key($this->secret, 'HS256'));
         } catch (\Exception $e) {
             return null;
         }

@@ -8,6 +8,7 @@ use App\Auth\Infrastructure\Http\Requests\RegisterRequest;
 use App\Common\Domain\Exceptions\BadRequestException;
 use App\Common\Infrastructure\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
@@ -24,7 +25,7 @@ class AuthController extends Controller
             $request->password
         );
 
-        return response()->json($authResponse->toArray())->cookie(cookie('jwt', $authResponse->accessToken, $authResponse->expiresIn));
+        return response()->json($authResponse->toArray())->cookie($this->authService->setCookieForResponse($authResponse));
     }
 
     public function register(RegisterRequest $request): JsonResponse
@@ -35,7 +36,7 @@ class AuthController extends Controller
             $request->password
         );
 
-        return response()->json($authResponse->toArray())->cookie(cookie('jwt', $authResponse->accessToken, $authResponse->expiresIn));
+        return response()->json($authResponse->toArray())->cookie($this->authService->setCookieForResponse($authResponse));
     }
 
     public function redirectToProvider(string $provider)
@@ -48,7 +49,7 @@ class AuthController extends Controller
         }
     }
 
-    public function handleProviderCallback(string $provider): JsonResponse
+    public function handleProviderCallback(string $provider): RedirectResponse
     {
         if (!request()->has('code')) {
             throw new BadRequestException('Missing code');
@@ -58,7 +59,7 @@ class AuthController extends Controller
             request()->get('code')
         );
 
-        return response()->json($authResponse->toArray())->cookie(cookie('jwt', $authResponse->accessToken, $authResponse->expiresIn));
+        return response()->redirectTo('/')->cookie($this->authService->setCookieForResponse($authResponse));
     }
 
     public function me(): JsonResponse
@@ -71,6 +72,6 @@ class AuthController extends Controller
     public function logout(): JsonResponse
     {
         auth()->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out'])->cookie('jwt', null, -1000);
     }
 }

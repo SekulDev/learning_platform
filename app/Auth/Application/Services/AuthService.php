@@ -11,6 +11,7 @@ use App\Auth\Domain\Services\OAuthService;
 use App\Auth\Domain\Services\TokenService;
 use App\Common\Domain\ValueObjects\Email;
 use App\Common\Domain\ValueObjects\Password;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthService
 {
@@ -67,5 +68,14 @@ class AuthService
             'email' => $userDTO->email,
             'roles' => $userDTO->roles
         ]);
+    }
+
+    public function setCookieForResponse(AuthResponseDTO $authResponse): \Symfony\Component\HttpFoundation\Cookie
+    {
+        $HTTP_ONLY = false;
+        $SECURE = false;
+
+
+        return Cookie::make('jwt', $authResponse->accessToken, $authResponse->expiresIn, null, null, $SECURE, $HTTP_ONLY);
     }
 }

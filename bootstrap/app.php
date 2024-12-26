@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
+        web: __DIR__ . '/../routes/web.php',
         api: __DIR__ . '/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -19,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Common\Infrastructure\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
+        $middleware->api(append: [
+            \App\Common\Infrastructure\Http\Middleware\TrustProxies::class,
+            \App\Common\Infrastructure\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+        ]);
         $middleware->web(append: [
             \App\Common\Infrastructure\Http\Middleware\TrustProxies::class,
             \App\Common\Infrastructure\Http\Middleware\EncryptCookies::class,
@@ -26,12 +31,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        $middleware->web()->alias([
-            'auth' => \App\Auth\Infrastructure\Http\Middleware\WebJwtAuthMiddleware::class,
+        $middleware->alias([
+            'web.auth' => \App\Auth\Infrastructure\Http\Middleware\WebJwtAuthMiddleware::class,
+            'api.auth' => \App\Auth\Infrastructure\Http\Middleware\JwtAuthMiddleware::class,
         ]);
-        $middleware->api()->alias([
-            'auth' => \App\Auth\Infrastructure\Http\Middleware\JwtAuthMiddleware::class,
-        ]);
+        $middleware->encryptCookies(except: ['jwt']);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\App\Common\Domain\Exceptions\HttpException $e, Request $request) {

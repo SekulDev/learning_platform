@@ -8,7 +8,7 @@ export interface AuthResponse {
 }
 
 export async function redirectOauth(provider: string) {
-    window.location.href = `/api/auth/${provider}`;
+    window.location.href = `/auth/${provider}`;
 }
 
 export const loginFormSchema = z.object({
@@ -42,6 +42,15 @@ export async function register(name: string, email: string, password: string) {
             password,
         });
         return data;
+    } catch (e) {
+        return null;
+    }
+}
+
+export async function logout() {
+    try {
+        await instance.post("/auth/logout");
+        window.location.href = "/";
     } catch (e) {
         return null;
     }

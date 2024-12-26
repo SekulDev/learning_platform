@@ -12,9 +12,11 @@ use Illuminate\Http\Request;
 class JwtAuthMiddleware
 {
     public function __construct(
-        private TokenService $tokenService,
+        private TokenService   $tokenService,
         private UserRepository $userRepository
-    ) {}
+    )
+    {
+    }
 
     public function handle(Request $request, Closure $next)
     {
@@ -30,13 +32,19 @@ class JwtAuthMiddleware
             throw AuthenticationException::invalidToken();
         }
 
-        auth()->setUser(UserDTO::fromUser($user));
+        $this->setUser(UserDTO::fromUser($user));
         return $next($request);
+    }
+
+    protected function setUser(UserDTO $user): void
+    {
+        auth()->setUser($user);
     }
 
     protected function extractToken(Request $request): string
     {
-        if (!$token = $request->bearerToken()) {
+        $token = $request->bearerToken();
+        if (!$token) {
             throw AuthenticationException::invalidToken();
         }
         return $token;
