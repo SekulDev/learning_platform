@@ -2,8 +2,9 @@
 
 namespace App\Auth\Domain\Services;
 
-interface TokenService
+interface TokenStrategy
 {
     public function createToken(array $payload): string;
+
     public function validateToken(string $token): ?array;
 }

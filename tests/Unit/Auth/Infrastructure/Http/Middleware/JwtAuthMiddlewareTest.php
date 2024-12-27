@@ -2,7 +2,7 @@
 
 namespace Auth\Infrastructure\Http\Middleware;
 
-use App\Auth\Application\Services\JwtTokenService;
+use App\Auth\Application\Services\JwtTokenStrategy;
 use App\Auth\Domain\Dto\UserDTO;
 use App\Auth\Domain\Models\User;
 use App\Auth\Domain\Repositories\UserRepository;
@@ -17,14 +17,14 @@ use Tests\TestCase;
 
 class JwtAuthMiddlewareTest extends TestCase
 {
-    private JwtTokenService $tokenService;
+    private JwtTokenStrategy $tokenService;
     private UserRepository $userRepository;
     private JwtAuthMiddleware $middleware;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tokenService = new JwtTokenService('test-secret', 60 * 60 * 24);
+        $this->tokenService = new JwtTokenStrategy('test-secret', 60 * 60 * 24);
         $this->userRepository = new LocalUserRepository();
 
         $this->middleware = new JwtAuthMiddleware($this->tokenService, $this->userRepository);
@@ -103,7 +103,7 @@ class JwtAuthMiddlewareTest extends TestCase
 
     public function testExpiredToken(): void
     {
-        $expiredTokenService = new JwtTokenService('test-secret', -3600); // negative TTL for expired token
+        $expiredTokenService = new JwtTokenStrategy('test-secret', -3600); // negative TTL for expired token
         $this->middleware = new JwtAuthMiddleware($expiredTokenService, $this->userRepository);
 
         $userId = 1;

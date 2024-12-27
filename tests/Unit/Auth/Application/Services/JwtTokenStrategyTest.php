@@ -2,17 +2,17 @@
 
 namespace Auth\Application\Services;
 
-use App\Auth\Application\Services\JwtTokenService;
+use App\Auth\Application\Services\JwtTokenStrategy;
 use Tests\TestCase;
 
-class JwtTokenServiceTest extends TestCase
+class JwtTokenStrategyTest extends TestCase
 {
-    private JwtTokenService $service;
+    private JwtTokenStrategy $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new JwtTokenService('test-secret', 3600);
+        $this->service = new JwtTokenStrategy('test-secret', 3600);
     }
 
     public function testCreateAndValidateToken(): void

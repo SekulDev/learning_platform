@@ -2,11 +2,11 @@
 
 namespace App\Auth\Application\Services;
 
-use App\Auth\Domain\Services\TokenService;
+use App\Auth\Domain\Services\TokenStrategy;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-class JwtTokenService implements TokenService
+class JwtTokenStrategy implements TokenStrategy
 {
 
     public function __construct(

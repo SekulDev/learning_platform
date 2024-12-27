@@ -5,14 +5,14 @@ namespace App\Auth\Infrastructure\Http\Middleware;
 use App\Auth\Domain\Dto\UserDTO;
 use App\Auth\Domain\Exceptions\AuthenticationException;
 use App\Auth\Domain\Repositories\UserRepository;
-use App\Auth\Domain\Services\TokenService;
+use App\Auth\Domain\Services\TokenStrategy;
 use Closure;
 use Illuminate\Http\Request;
 
 class JwtAuthMiddleware
 {
     public function __construct(
-        private TokenService   $tokenService,
+        private TokenStrategy  $tokenService,
         private UserRepository $userRepository
     )
     {

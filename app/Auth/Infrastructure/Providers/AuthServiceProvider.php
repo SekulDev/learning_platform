@@ -3,11 +3,11 @@
 namespace App\Auth\Infrastructure\Providers;
 
 use App\Auth\Application\Services\AuthService;
-use App\Auth\Application\Services\JwtTokenService;
+use App\Auth\Application\Services\JwtTokenStrategy;
 use App\Auth\Application\Services\OAuthServiceImpl;
 use App\Auth\Domain\Repositories\UserRepository;
 use App\Auth\Domain\Services\OAuthService;
-use App\Auth\Domain\Services\TokenService;
+use App\Auth\Domain\Services\TokenStrategy;
 use App\Auth\Infrastructure\Persistence\Repositories\Eloquent\EloquentUserRepository;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
@@ -19,11 +19,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
 
-        $this->app->bind(TokenService::class, JwtTokenService::class);
+        $this->app->bind(TokenStrategy::class, JwtTokenStrategy::class);
         $this->app->bind(OAuthService::class, OAuthServiceImpl::class);
 
-        $this->app->singleton(TokenService::class, function () {
-            return new JwtTokenService(
+        $this->app->singleton(TokenStrategy::class, function () {
+            return new JwtTokenStrategy(
                 config('jwt.secret'),
                 config('jwt.ttl')
             );
@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->singleton(AuthService::class, function ($app) {
             return new AuthService(
                 $app->make('App\Auth\Domain\Repositories\UserRepository'),
-                $app->make('App\Auth\Domain\Services\TokenService'),
+                $app->make('App\Auth\Domain\Services\TokenStrategy'),
                 $app->make('App\Auth\Domain\Services\OAuthService')
             );
         });

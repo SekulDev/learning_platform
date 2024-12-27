@@ -8,7 +8,7 @@ use App\Auth\Domain\Exceptions\AuthenticationException;
 use App\Auth\Domain\Models\User;
 use App\Auth\Domain\Repositories\UserRepository;
 use App\Auth\Domain\Services\OAuthService;
-use App\Auth\Domain\Services\TokenService;
+use App\Auth\Domain\Services\TokenStrategy;
 use App\Common\Domain\ValueObjects\Email;
 use App\Common\Domain\ValueObjects\Password;
 use Illuminate\Support\Facades\Cookie;
@@ -17,7 +17,7 @@ class AuthService
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly TokenService   $tokenService,
+        private readonly TokenStrategy  $tokenService,
         private readonly OAuthService   $oauthService
     )
     {

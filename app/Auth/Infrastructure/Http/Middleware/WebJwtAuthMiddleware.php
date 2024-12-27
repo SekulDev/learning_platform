@@ -5,7 +5,7 @@ namespace App\Auth\Infrastructure\Http\Middleware;
 use App\Auth\Domain\Dto\UserDTO;
 use App\Auth\Domain\Exceptions\AuthenticationException;
 use App\Auth\Domain\Repositories\UserRepository;
-use App\Auth\Domain\Services\TokenService;
+use App\Auth\Domain\Services\TokenStrategy;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +13,7 @@ use Inertia\Inertia;
 class WebJwtAuthMiddleware extends JwtAuthMiddleware
 {
 
-    public function __construct(TokenService $tokenService, UserRepository $userRepository)
+    public function __construct(TokenStrategy $tokenService, UserRepository $userRepository)
     {
         parent::__construct($tokenService, $userRepository);
     }
