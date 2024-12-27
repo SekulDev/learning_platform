@@ -8,9 +8,9 @@ class Lesson extends AggregateRoot
 {
 
     public function __construct(
-        private int     $id,
-        private string  $title,
-        private ?string $content,
+        private int    $id,
+        private string $title,
+        private string $content,
     )
     {
     }
@@ -28,6 +28,12 @@ class Lesson extends AggregateRoot
     public function getContent(): ?string
     {
         return $this->content;
+    }
+
+    public function updateLesson(string $title, string $content): void
+    {
+        $this->content = $content;
+        $this->title = $title;
     }
 
     public function toArray(): array
