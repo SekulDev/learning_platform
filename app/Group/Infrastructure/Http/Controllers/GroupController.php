@@ -77,4 +77,14 @@ class GroupController extends Controller
 
         return response()->json($members);
     }
+
+    public function getGroups(): JsonResponse
+    {
+        /** @var UserDTO $me */
+        $me = auth()->user();
+
+        $groups = $this->groupService->getGroups($me->id);
+
+        return response()->json($groups);
+    }
 }

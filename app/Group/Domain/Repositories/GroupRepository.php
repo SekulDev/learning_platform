@@ -14,7 +14,14 @@ interface GroupRepository
     public function save(Group $group): Group;
 
     /**
-     * @return array<int, User>
+     * @return User[]
      */
     public function getMembers(int $groupId): array;
+
+
+    /**
+     * @param int $userId
+     * @return Group[]
+     */
+    public function findByMemberId(int $userId): array;
 }

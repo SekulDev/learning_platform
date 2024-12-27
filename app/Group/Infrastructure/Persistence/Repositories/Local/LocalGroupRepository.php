@@ -40,6 +40,7 @@ class LocalGroupRepository implements GroupRepository
         return $this->groupMembers[$groupId] ?? [];
     }
 
+    //method only for tests
     public function addMemberToGroup(int $groupId, User $user): void
     {
         if (!isset($this->groups[$groupId])) {
@@ -49,6 +50,7 @@ class LocalGroupRepository implements GroupRepository
         $this->groupMembers[$groupId][] = $user;
     }
 
+    // method only for tests
     public function removeMemberFromGroup(int $groupId, int $userId): void
     {
         if (!isset($this->groups[$groupId]) || !isset($this->groupMembers[$groupId])) {
@@ -61,5 +63,12 @@ class LocalGroupRepository implements GroupRepository
         );
     }
 
+    public function findByMemberId(int $userId): array
+    {
+        return array_values(array_filter(
+            $this->groups,
+            fn(Group $group) => in_array($userId, $group->getMembers())
+        ));
+    }
 
 }

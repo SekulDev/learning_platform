@@ -18,6 +18,7 @@ Route::prefix('auth')->group(function () {
 Route::middleware('api.auth')->group(function () {
 
     Route::prefix('group')->group(function () {
+        Route::get('/', [GroupController::class, 'getGroups']);
         Route::post('/', [GroupController::class, 'createGroup']);
         Route::delete('/{id}', [GroupController::class, 'deleteGroup']);
 

@@ -14,6 +14,7 @@ use App\Group\Application\Services\GroupService;
 use App\Group\Domain\Dto\AddMemberToGroupDTO;
 use App\Group\Domain\Dto\CreateGroupDTO;
 use App\Group\Domain\Dto\DeleteGroupDTO;
+use App\Group\Domain\Dto\GroupDTO;
 use App\Group\Domain\Dto\RemoveMemberFromGroupDTO;
 use App\Group\Domain\Models\Group;
 use App\Group\Infrastructure\Persistence\Repositories\Local\LocalGroupRepository;
@@ -239,5 +240,29 @@ class GroupServiceTest extends TestCase
         $result = $this->groupService->getMembers($group->getId(), UserDTO::fromUser($this->adminUser));
 
         $this->assertEquals($expected, $result);
+    }
+
+    public function testGetGroups(): void
+    {
+        $group = new Group(1, 'test group', $this->adminUser->getId(), [$this->regularUser->getId()]);
+        $this->groupRepository->save($group);
+
+        $expected = [
+            GroupDTO::fromGroup($group),
+        ];
+
+        $result = $this->groupService->getGroups($this->regularUser->getId());
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testGetGroupsWithNoBelongsToGroup(): void
+    {
+        $group = new Group(1, 'test group', $this->adminUser->getId());
+        $this->groupRepository->save($group);
+
+        $result = $this->groupService->getGroups($this->regularUser->getId());
+
+        $this->assertEmpty($result);
     }
 }

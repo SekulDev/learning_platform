@@ -92,8 +92,13 @@ class GroupService
 
         $users = $this->groupRepository->getMembers($groupId);
 
-        return array_map(function ($user) {
-            return UserDTO::fromUser($user);
-        }, $users);
+        return array_map(fn($user) => UserDTO::fromUser($user), $users);
+    }
+
+    public function getGroups(int $userId): array
+    {
+        $groups = $this->groupRepository->findByMemberId($userId);
+        
+        return array_map(fn($group) => GroupDTO::fromGroup($group), $groups);
     }
 }

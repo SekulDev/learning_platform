@@ -53,4 +53,11 @@ class EloquentGroupRepository implements GroupRepository
             );
         })->toArray();
     }
+
+    public function findByMemberId(int $userId): array
+    {
+        $groupModels = GroupModel::whereJsonContains('members', $userId)->get();
+
+        return $groupModels->map(fn($groupModel) => $groupModel->toGroup())->toArray();
+    }
 }
