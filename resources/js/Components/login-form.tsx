@@ -72,6 +72,7 @@ export function LoginForm({
                                         <Button
                                             variant="outline"
                                             className="w-full"
+                                            type="button"
                                             onClick={() => onOauth("github")}
                                         >
                                             <GithubIcon />
@@ -80,6 +81,7 @@ export function LoginForm({
                                         <Button
                                             variant="outline"
                                             className="w-full"
+                                            type="button"
                                             onClick={() => onOauth("google")}
                                         >
                                             <svg

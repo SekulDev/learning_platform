@@ -13,6 +13,7 @@ use App\Group\Infrastructure\Http\Requests\AddMemberToGroupRequest;
 use App\Group\Infrastructure\Http\Requests\CreateGroupRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class GroupController extends Controller
 {
@@ -96,5 +97,14 @@ class GroupController extends Controller
         $groups = $this->groupService->getOwnedGroups($me->id);
 
         return response()->json($groups);
+    }
+
+    public function showGroupMembers(int $id)
+    {
+        $group = $this->groupService->getGroupById($id);
+
+        return Inertia::render('Group/Members', [
+            'group' => $group->toArray()
+        ]);
     }
 }

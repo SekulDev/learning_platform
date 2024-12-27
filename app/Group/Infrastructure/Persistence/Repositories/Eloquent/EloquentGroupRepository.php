@@ -3,6 +3,8 @@
 namespace App\Group\Infrastructure\Persistence\Repositories\Eloquent;
 
 use App\Auth\Domain\Models\User;
+use App\Common\Domain\ValueObjects\Email;
+use App\Common\Domain\ValueObjects\Password;
 use App\Group\Domain\Models\Group;
 use App\Group\Domain\Repositories\GroupRepository;
 use App\Group\Infrastructure\Persistence\GroupModel;
@@ -33,7 +35,7 @@ class EloquentGroupRepository implements GroupRepository
 
         $model->save();
 
-        $model->members()->sync(array_map(fn($member) => $member->getId(), $group->getMembers()));
+        $model->members()->sync(array_map(fn($member) => $member, $group->getMembers()));
         return $model->toGroup();
     }
 
@@ -45,9 +47,9 @@ class EloquentGroupRepository implements GroupRepository
             return new User(
                 $member->id,
                 $member->name,
-                $member->email,
-                $member->password,
-                $member->role,
+                new Email($member->email),
+                Password::fromHash($member->password),
+                $member->roles,
                 $member->provider,
                 $member->providerId
             );

@@ -14,18 +14,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import {
-    Folder,
-    Forward,
-    MoreHorizontal,
-    PlusIcon,
-    Trash2,
-    User,
-} from "lucide-react";
+import { Folder, MoreHorizontal, PlusIcon, Trash2, User } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAdminGroups, removeGroup } from "@/services/group-service";
 import { useToast } from "@/hooks/use-toast";
+import CreateGroupDialog from "@/Components/admin/create-group-dialog";
 
 export default function AppSidebarAdmin() {
     const queryClient = useQueryClient();
@@ -80,12 +74,14 @@ export default function AppSidebarAdmin() {
                                 side={isMobile ? "bottom" : "right"}
                                 align={isMobile ? "end" : "start"}
                             >
-                                <DropdownMenuItem>
-                                    <Folder className="text-muted-foreground" />
-                                    <span>Group members</span>
+                                <DropdownMenuItem asChild>
+                                    <a href={`/group/${group.id}/member`}>
+                                        <User />
+                                        <span>Group members</span>
+                                    </a>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <Forward className="text-muted-foreground" />
+                                    <Folder className="text-muted-foreground" />
                                     <span>Group sections</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
@@ -100,10 +96,12 @@ export default function AppSidebarAdmin() {
                     </SidebarMenuItem>
                 ))}
                 <SidebarMenuItem>
-                    <SidebarMenuButton className="text-sidebar-foreground/70">
-                        <PlusIcon />
-                        <span>New Group</span>
-                    </SidebarMenuButton>
+                    <CreateGroupDialog>
+                        <SidebarMenuButton className="text-sidebar-foreground/70">
+                            <PlusIcon />
+                            <span>New Group</span>
+                        </SidebarMenuButton>
+                    </CreateGroupDialog>
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>

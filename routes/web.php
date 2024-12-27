@@ -1,6 +1,7 @@
 <?php
 
 use App\Auth\Infrastructure\Http\Controllers\AuthController;
+use App\Group\Infrastructure\Http\Controllers\GroupController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,5 +21,9 @@ Route::prefix('auth')->group(function () {
 Route::middleware('web.auth')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Dashboard');
+    });
+
+    Route::prefix('group')->group(function () {
+        Route::get('/{id}/member', [GroupController::class, 'showGroupMembers']);
     });
 });

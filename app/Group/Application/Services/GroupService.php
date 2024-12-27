@@ -71,6 +71,8 @@ class GroupService
 
         $group = $this->groupRepository->findById($addMemberDTO->groupId);
         $group->addMember($user);
+
+        $this->groupRepository->save($group);
     }
 
     public function removeMemberFromGroup(RemoveMemberFromGroupDTO $removeMemberDTO): void
@@ -84,6 +86,8 @@ class GroupService
 
         $group = $this->groupRepository->findById($removeMemberDTO->groupId);
         $group->removeMember($user);
+
+        $this->groupRepository->save($group);
     }
 
     public function getMembers(int $groupId, UserDTO $user): array
@@ -112,5 +116,16 @@ class GroupService
         $groups = $this->groupRepository->findByOwnerId($userId);
 
         return array_map(fn($group) => GroupDTO::fromGroup($group), $groups);
+    }
+
+    public function getGroupById(int $groupId): GroupDTO
+    {
+        $group = $this->groupRepository->findById($groupId);
+
+        if (!$group) {
+            throw GroupException::groupNotExists();
+        }
+
+        return GroupDTO::fromGroup($group);
     }
 }

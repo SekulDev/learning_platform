@@ -10,7 +10,6 @@ import {
     BreadcrumbItem,
     BreadcrumbLink,
     BreadcrumbList,
-    BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/Components/ui/breadcrumb";
 import { AppSidebar } from "@/Components/app-sidebar/app-sidebar";
@@ -18,11 +17,14 @@ import { usePage } from "@inertiajs/react";
 import { useDarkMode } from "@/hooks/use-dark-mode";
 import { GroupsContextProvider } from "@/contexts/groups-context";
 import { Toaster } from "@/Components/ui/toaster";
+import { Path } from "@/types";
 
 export default function DashboardLayout({
     children,
+    path,
 }: {
     children: React.ReactNode;
+    path?: Path[];
 }) {
     const user = usePage().props.auth.user;
 
@@ -44,23 +46,38 @@ export default function DashboardLayout({
                             <Breadcrumb>
                                 <BreadcrumbList>
                                     <BreadcrumbItem className="hidden md:block">
-                                        <BreadcrumbLink href="#">
-                                            Building Your Application
+                                        <BreadcrumbLink href="/">
+                                            Learning platform
                                         </BreadcrumbLink>
                                     </BreadcrumbItem>
-                                    <BreadcrumbSeparator className="hidden md:block" />
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>
-                                            Data Fetching
-                                        </BreadcrumbPage>
-                                    </BreadcrumbItem>
+                                    {path && path.length > 0 && (
+                                        <>
+                                            <BreadcrumbSeparator className="hidden md:block" />
+                                            {path.map((p, index, array) => (
+                                                <React.Fragment key={index}>
+                                                    <BreadcrumbItem>
+                                                        <BreadcrumbLink
+                                                            href={p.url}
+                                                        >
+                                                            {p.label}
+                                                        </BreadcrumbLink>
+                                                    </BreadcrumbItem>
+                                                    {index <
+                                                        array.length - 1 && (
+                                                        <BreadcrumbSeparator className="hidden md:block" />
+                                                    )}
+                                                </React.Fragment>
+                                            ))}
+                                        </>
+                                    )}
                                 </BreadcrumbList>
                             </Breadcrumb>
                         </div>
                     </header>
                     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-                        {children}
-                        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+                        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min p-5">
+                            {children}
+                        </div>
                     </div>
                 </SidebarInset>
             </SidebarProvider>

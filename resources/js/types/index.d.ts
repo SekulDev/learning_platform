@@ -22,6 +22,11 @@ export interface Group {
     sections?: Array<Section>;
 }
 
+export interface Path {
+    label: string;
+    url: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
