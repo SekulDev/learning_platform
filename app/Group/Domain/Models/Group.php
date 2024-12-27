@@ -2,7 +2,9 @@
 
 namespace App\Group\Domain\Models;
 
+use App\Auth\Domain\Models\User;
 use App\Common\Domain\AggregateRoot;
+use App\Group\Domain\Exceptions\GroupException;
 
 class Group extends AggregateRoot
 {
@@ -10,7 +12,8 @@ class Group extends AggregateRoot
     public function __construct(
         private int    $id,
         private string $name,
-        private int    $user_id
+        private int    $user_id,
+        private array  $members = []
     )
     {
     }
@@ -30,12 +33,32 @@ class Group extends AggregateRoot
         return $this->user_id;
     }
 
+    public function getMembers(): array
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $user): void
+    {
+        if (in_array($user->getId(), $this->members, true)) {
+            throw GroupException::userAlreadyIsInGroup();
+        }
+
+        $this->members[] = $user->getId();
+    }
+
+    public function removeMember(User $user): void
+    {
+        $this->members = array_filter($this->members, fn($u) => $u !== $user->getId());
+    }
+
     public function toArray(): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'user_id' => $this->user_id
+            'user_id' => $this->user_id,
+            'members' => $this->members
         ];
     }
 }

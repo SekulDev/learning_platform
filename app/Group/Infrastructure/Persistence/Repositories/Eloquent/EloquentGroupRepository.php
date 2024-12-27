@@ -2,6 +2,7 @@
 
 namespace App\Group\Infrastructure\Persistence\Repositories\Eloquent;
 
+use App\Auth\Domain\Models\User;
 use App\Group\Domain\Models\Group;
 use App\Group\Domain\Repositories\GroupRepository;
 use App\Group\Infrastructure\Persistence\GroupModel;
@@ -11,7 +12,7 @@ class EloquentGroupRepository implements GroupRepository
 
     public function findById(int $id): ?Group
     {
-        $model = GroupModel::find($id);
+        $model = GroupModel::with(['members'])->find($id);
         return $model ? $model->toGroup() : null;
     }
 
@@ -32,6 +33,24 @@ class EloquentGroupRepository implements GroupRepository
 
         $model->save();
 
+        $model->members()->sync(array_map(fn($member) => $member->getId(), $group->getMembers()));
         return $model->toGroup();
+    }
+
+    public function getMembers(int $groupId): array
+    {
+        $group = GroupModel::with(['members'])->findOrFail($groupId);
+
+        return $group->members->map(function ($member) {
+            return new User(
+                $member->id,
+                $member->name,
+                $member->email,
+                $member->password,
+                $member->role,
+                $member->provider,
+                $member->providerId
+            );
+        })->toArray();
     }
 }

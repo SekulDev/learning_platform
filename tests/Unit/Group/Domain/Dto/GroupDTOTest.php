@@ -11,6 +11,8 @@ class GroupDTOTest extends TestCase
     private int $id;
     private string $name;
     private int $userId;
+
+    private array $members;
     private GroupDTO $dto;
 
     protected function setUp(): void
@@ -18,10 +20,12 @@ class GroupDTOTest extends TestCase
         $this->id = 1;
         $this->name = 'Test Group';
         $this->userId = 123;
+        $this->members = [];
         $this->dto = new GroupDTO(
             $this->id,
             $this->name,
-            $this->userId
+            $this->userId,
+            $this->members
         );
     }
 
@@ -31,6 +35,7 @@ class GroupDTOTest extends TestCase
             'id' => $this->id,
             'name' => $this->name,
             'user_id' => $this->userId,
+            'members' => $this->members
         ];
 
         $result = $this->dto->toArray();
@@ -40,6 +45,7 @@ class GroupDTOTest extends TestCase
         $this->assertArrayHasKey('id', $result);
         $this->assertArrayHasKey('name', $result);
         $this->assertArrayHasKey('user_id', $result);
+        $this->assertArrayHasKey('members', $result);
     }
 
     public function testFromGroupCreatesCorrectDTO(): void

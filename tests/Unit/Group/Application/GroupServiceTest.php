@@ -11,15 +11,17 @@ use App\Common\Domain\Exceptions\UnauthorizedException;
 use App\Common\Domain\ValueObjects\Email;
 use App\Common\Domain\ValueObjects\Password;
 use App\Group\Application\Services\GroupService;
+use App\Group\Domain\Dto\AddMemberToGroupDTO;
 use App\Group\Domain\Dto\CreateGroupDTO;
 use App\Group\Domain\Dto\DeleteGroupDTO;
-use App\Group\Domain\Repositories\GroupRepository;
+use App\Group\Domain\Dto\RemoveMemberFromGroupDTO;
+use App\Group\Domain\Models\Group;
 use App\Group\Infrastructure\Persistence\Repositories\Local\LocalGroupRepository;
 use Tests\TestCase;
 
 class GroupServiceTest extends TestCase
 {
-    private GroupRepository $groupRepository;
+    private LocalGroupRepository $groupRepository;
     private UserRepository $userRepository;
     private GroupService $groupService;
 
@@ -156,5 +158,86 @@ class GroupServiceTest extends TestCase
         $this->expectExceptionMessage('User is not owner');
 
         $this->groupService->deleteGroup($deleteGroupDTO);
+    }
+
+    public function testCheckPermissionsThrowsWhenGroupNotExists(): void
+    {
+        $dto = new AddMemberToGroupDTO(999, 'user@test.com', UserDTO::fromUser($this->adminUser));
+
+        $this->expectException(NotFoundException::class);
+
+        $this->groupService->addMemberToGroup($dto);
+    }
+
+    public function testCheckPermissionsThrowsWhenNotOwner(): void
+    {
+        $groupId = 5;
+        $group = new Group($groupId, 'test group', $this->adminUser->getId());
+        $anotherAdmin = new User(3, 'admin2', new Email('admin2@test.com'), Password::fromPlainText('password'), ['user', 'admin']);
+        $this->userRepository->save($anotherAdmin);
+
+        $this->userRepository->save($anotherAdmin);
+        $this->groupRepository->save($group);
+
+        $dto = new AddMemberToGroupDTO($groupId, $this->regularUser->getEmail()->value(), UserDTO::fromUser($anotherAdmin));
+
+        $this->expectException(UnauthorizedException::class);
+
+        $this->groupService->addMemberToGroup($dto);
+    }
+
+    public function testAddMemberToGroup(): void
+    {
+        $group = new Group(1, 'test group', $this->adminUser->getId());
+        $this->groupRepository->save($group);
+
+        $dto = new AddMemberToGroupDTO(1, $this->regularUser->getEmail()->value(), UserDTO::fromUser($this->adminUser));
+
+        $this->groupService->addMemberToGroup($dto);
+
+        $updatedGroup = $this->groupRepository->findById(1);
+        $this->assertContains($this->regularUser->getId(), $updatedGroup->getMembers());
+    }
+
+    public function testAddMemberToGroupThrowsWhenNotAdmin(): void
+    {
+        $group = new Group(1, 'test group', $this->regularUser->getId());
+        $this->groupRepository->save($group);
+
+        $dto = new AddMemberToGroupDTO(1, $this->regularUser->getEmail()->value(), UserDTO::fromUser($this->regularUser));
+
+        $this->expectException(UnauthorizedException::class);
+
+        $this->groupService->addMemberToGroup($dto);
+    }
+
+    public function testRemoveMemberFromGroup(): void
+    {
+        $group = new Group(1, 'test group', $this->adminUser->getId(), [$this->regularUser->getId()]);
+
+        $this->groupRepository->save($group);
+
+        $dto = new RemoveMemberFromGroupDTO(1, $this->regularUser->getId(), UserDTO::fromUser($this->adminUser));
+
+        $this->groupService->removeMemberFromGroup($dto);
+
+        $updatedGroup = $this->groupRepository->findById(1);
+        $this->assertNotContains($this->regularUser->getId(), $updatedGroup->getMembers());
+    }
+
+    public function testGetMembers(): void
+    {
+        $group = new Group(1, 'test group', $this->adminUser->getId());
+        $this->groupRepository->save($group);
+        // only for tests
+        $this->groupRepository->addMemberToGroup($group->getId(), $this->regularUser);
+
+        $expected = [
+            UserDTO::fromUser($this->regularUser),
+        ];
+
+        $result = $this->groupService->getMembers($group->getId(), UserDTO::fromUser($this->adminUser));
+
+        $this->assertEquals($expected, $result);
     }
 }

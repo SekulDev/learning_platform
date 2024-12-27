@@ -18,7 +18,11 @@ class LocalUserRepository implements UserRepository
 
     public function findByEmail(Email $email): ?User
     {
-        return $this->users[array_search($email->value(), array_column($this->users, 'email'))] ?? null;
+        return array_reduce(
+            $this->users,
+            fn(?User $carry, User $item) => $item->getEmail()->value() === $email->value() ? $item : $carry,
+            null
+        );
     }
 
     public function findByProvider(string $provider, string $providerId): ?User
