@@ -1,77 +1,150 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Educational Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A platform where teachers can create and manage lessons for their groups in an intuitive and enjoyable way. The main focus is on easy deployment and initial scalability for smaller target audiences.
 
-## About Laravel
+## Technology Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and
-creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in
-many web projects, such as:
+### Backend
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache)
-  storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   **Laravel** - chosen for its simplicity, convenience, and ease of application development
+-   **PostgreSQL** - as the database for its reliability and performance
+-   **AWS S3** - for storing uploaded images, ensuring availability without infrastructure concerns
+-   **Pusher** - for real-time notifications to ensure application scalability
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Frontend
 
-## Learning Laravel
+-   **React** with TypeScript
+-   **shadcn/ui** components
+-   **TailwindCSS** for styling
+-   **Inertia.js** for server-side rendering capabilities
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all
-modern web application frameworks, making it a breeze to get started with the framework.
+## Architecture
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a
-modern Laravel application from scratch.
+The application follows Domain-Driven Design (DDD) principles with a ports and adapters architecture to ensure extensibility and universality. While the implementation might not strictly follow all theoretical guidelines, it maintains the core benefits of the architecture.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video
-tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging
-into our comprehensive video library.
+Key architectural decisions:
 
-## Laravel Sponsors
+-   Stateless Laravel application for horizontal scalability
+-   PostgreSQL as the primary database
+-   S3 for image storage
+-   Pusher for scalable notifications
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in
-becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Features
 
-### Premium Partners
+### Authentication & Authorization
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   JWT-based authentication
+-   OAuth2 support for GitHub and Google login
+
+### Group Management
+
+-   Administrators can:
+    -   Create groups
+    -   Add users to groups
+    -   Create sections within groups
+    -   Create lessons within sections
+
+### Lesson Creation
+
+-   Full Markdown editor support
+-   Text formatting capabilities
+-   Image insertion
+-   Syntax highlighting for code snippets
+-   Scheduled publishing
+-   Group-specific access control
+
+### User Features
+
+-   Access to authorized lessons
+-   Real-time notifications for new lessons
+
+## Development Setup
+
+### Prerequisites
+
+-   PHP 8.3 or higher
+-   Node.js
+-   pnpm
+
+### Local Development Setup
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/SekulDev/learning_platform.git
+cd learning_platform
+```
+
+2. Install PHP dependencies
+
+```bash
+composer install
+```
+
+3. Install frontend dependencies
+
+```bash
+pnpm install
+```
+
+4. Configure environment
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+5. Configure your `.env` file with:
+
+-   Database credentials
+-   S3 credentials
+-   Pusher credentials
+-   OAuth credentials
+
+6. Run migrations
+
+```bash
+php artisan migrate
+```
+
+7. Start the development servers
+
+```bash
+php artisan serve
+pnpm dev
+```
+
+## Deployment
+
+To deploy using Docker:
+
+```bash
+docker-compose up -d --build
+```
+
+## Project Status
+
+This project was developed as part of a challenge within several dozen hours by a single developer. Due to the time constraints and scope, some decisions were made to optimize development speed:
+
+-   Direct commits to main branch (as a solo developer)
+-   Focus on core functionality over comprehensive testing
+
+### Areas for Improvement
+
+-   Missing integration and E2E tests (only unit tests present)
+-   Insufficient abstraction level in some cases
+-   Lack of comprehensive documentation
+
+### Learning Outcomes
+
+The project served as an excellent learning experience with DDD and ports and adapters architecture, providing valuable insights into architectural patterns and their practical implementation.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in
-the [Laravel documentation](https://laravel.com/docs/contributions).
+I'm open to suggestions and improvements! Feel free to:
 
-## Code of Conduct
+-   Submit issues
+-   Propose improvements
+-   Share feedback on the architecture
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by
-the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell
-via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The goal is to learn and improve, so all constructive input is welcome.
