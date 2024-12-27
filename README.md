@@ -2,6 +2,8 @@
 
 A platform where teachers can create and manage lessons for their groups in an intuitive and enjoyable way. The main focus is on easy deployment and initial scalability for smaller target audiences.
 
+⚠️ **Project still "Work In Progress"** ⚠️
+
 ## Technology Stack
 
 ### Backend
