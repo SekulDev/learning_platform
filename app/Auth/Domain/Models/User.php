@@ -28,6 +28,11 @@ class User extends AggregateRoot
         return $this->password->verify($password);
     }
 
+    public function isAdmin(): bool
+    {
+        return in_array('admin', $this->roles);
+    }
+
     public static function createFromOAuth(
         string $name,
         Email  $email,

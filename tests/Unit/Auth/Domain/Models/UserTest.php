@@ -20,14 +20,14 @@ class UserTest extends TestCase
             id: 1,
             name: 'John Doe',
             email: $email,
-            password: $password
+            password: $password,
         );
 
         $this->assertEquals(1, $user->getId());
         $this->assertEquals('John Doe', $user->getName());
         $this->assertEquals($email, $user->getEmail());
         $this->assertEquals($password, $user->getPassword());
-        $this->assertEmpty($user->getRoles());
+        $this->assertEquals($user->getRoles(), ['user']);
         $this->assertNull($user->getProvider());
         $this->assertNull($user->getProviderId());
     }
@@ -121,5 +121,37 @@ class UserTest extends TestCase
         );
 
         $this->assertEquals($roles, $user->getRoles());
+    }
+
+    public function testUserIsAdmin(): void
+    {
+        $email = new Email('test@example.com');
+        $password = Password::fromPlaintext($this->plainPassword);
+        $roles = ['user', 'admin'];
+        $user = new User(
+            id: 1,
+            name: 'John Doe',
+            email: $email,
+            password: $password,
+            roles: $roles
+        );
+
+        $this->assertTrue($user->isAdmin());
+    }
+
+    public function testUserIsNotAdmin(): void
+    {
+        $email = new Email('test@example.com');
+        $password = Password::fromPlaintext($this->plainPassword);
+        $roles = ['user'];
+        $user = new User(
+            id: 1,
+            name: 'John Doe',
+            email: $email,
+            password: $password,
+            roles: $roles
+        );
+
+        $this->assertFalse($user->isAdmin());
     }
 }
