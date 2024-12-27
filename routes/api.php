@@ -25,6 +25,8 @@ Route::middleware('api.auth')->group(function () {
         Route::get('/{id}/member', [GroupController::class, 'getMembers']);
         Route::post('/{id}/member', [GroupController::class, 'addMemberToGroup']);
         Route::delete('/{id}/member/{$userId}', [GroupController::class, 'removeMemberFromGroup']);
+
+        Route::get('/owner', [GroupController::class, 'getOwnedGroups']);
     });
 
 });

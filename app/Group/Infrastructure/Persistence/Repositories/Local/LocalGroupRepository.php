@@ -71,4 +71,9 @@ class LocalGroupRepository implements GroupRepository
         ));
     }
 
+    public function findByOwnerId(int $userId): array
+    {
+        return array_values(array_filter($this->groups, fn(Group $group) => $group->getUserId() === $userId));
+    }
+
 }

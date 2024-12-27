@@ -9,6 +9,8 @@ import React from "react";
 import AppSidebarHeader from "@/Components/app-sidebar/app-sidebar-header";
 import AppSidebarUser from "@/Components/app-sidebar/app-sidebar-user";
 import { User } from "@/types";
+import AppSidebarGroups from "@/Components/app-sidebar/app-sidebar-groups";
+import AppSidebarAdmin from "@/Components/app-sidebar/app-sidebar-admin";
 
 export function AppSidebar({
     user,
@@ -20,7 +22,14 @@ export function AppSidebar({
                 <AppSidebarHeader />
             </SidebarHeader>
 
-            <SidebarContent></SidebarContent>
+            <SidebarContent>
+                <AppSidebarGroups />
+                {user.roles.includes("admin") && (
+                    <>
+                        <AppSidebarAdmin />
+                    </>
+                )}
+            </SidebarContent>
             <SidebarFooter>
                 <AppSidebarUser user={user} />
             </SidebarFooter>

@@ -24,4 +24,10 @@ interface GroupRepository
      * @return Group[]
      */
     public function findByMemberId(int $userId): array;
+
+    /**
+     * @param int $userId
+     * @return Group[]
+     */
+    public function findByOwnerId(int $userId): array;
 }

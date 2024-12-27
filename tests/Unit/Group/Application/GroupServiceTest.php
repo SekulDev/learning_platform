@@ -265,4 +265,28 @@ class GroupServiceTest extends TestCase
 
         $this->assertEmpty($result);
     }
+
+    public function testGetOwnedGroups(): void
+    {
+        $group = new Group(1, 'test group', $this->adminUser->getId());
+        $this->groupRepository->save($group);
+
+        $expected = [
+            GroupDTO::fromGroup($group),
+        ];
+
+        $result = $this->groupService->getOwnedGroups($this->adminUser->getId());
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testOwnedGroupsWhenIsNotAdmin(): void
+    {
+        $group = new Group(1, 'test group', $this->adminUser->getId());
+        $this->groupRepository->save($group);
+
+        $this->expectException(UnauthorizedException::class);
+
+        $this->groupService->getOwnedGroups($this->regularUser->getId());
+    }
 }

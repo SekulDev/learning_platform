@@ -24,7 +24,7 @@ class GroupModel extends Model
 
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(UserModel::class, 'group_members');
+        return $this->belongsToMany(UserModel::class, 'group_members', 'group_id', 'user_id');
     }
 
     public function toGroup(): Group

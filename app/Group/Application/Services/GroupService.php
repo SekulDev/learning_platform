@@ -98,7 +98,19 @@ class GroupService
     public function getGroups(int $userId): array
     {
         $groups = $this->groupRepository->findByMemberId($userId);
-        
+
+        return array_map(fn($group) => GroupDTO::fromGroup($group), $groups);
+    }
+
+    public function getOwnedGroups(int $userId): array
+    {
+        $user = $this->userRepository->findById($userId);
+        if (!$user || !$user->isAdmin()) {
+            throw GroupException::isNotAdmin();
+        }
+
+        $groups = $this->groupRepository->findByOwnerId($userId);
+
         return array_map(fn($group) => GroupDTO::fromGroup($group), $groups);
     }
 }

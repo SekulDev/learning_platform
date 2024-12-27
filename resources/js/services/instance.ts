@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 function getJwtFromCookies(): string | null {
     const KEY = "jwt";
@@ -30,3 +30,15 @@ instance.interceptors.request.use((data) => {
 });
 
 export { instance };
+
+export const queryRequest = <T>(options: AxiosRequestConfig) => {
+    const onSuccess = (response: AxiosResponse<T>) => {
+        return response?.data;
+    };
+
+    const onError = (error: any) => {
+        return Promise.reject(error.response?.data);
+    };
+
+    return instance(options).then(onSuccess).catch(onError);
+};

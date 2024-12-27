@@ -16,7 +16,7 @@ class GroupServiceProvider extends ServiceProvider
         $this->app->singleton(GroupService::class, function ($app) {
             return new GroupService(
                 $app->make('App\Group\Domain\Repositories\GroupRepository'),
-                $app->make('App\Auth\Domain\Repository\UserRepository')
+                $app->make('App\Auth\Domain\Repositories\UserRepository')
             );
         });
     }

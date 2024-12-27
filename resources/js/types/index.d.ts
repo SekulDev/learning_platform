@@ -2,6 +2,24 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    roles: string[];
+}
+
+export interface Lesson {
+    id: number;
+    name: string;
+}
+
+export interface Section {
+    id: number;
+    name: string;
+    lessons: Array<Lesson>;
+}
+
+export interface Group {
+    id: number;
+    name: string;
+    sections?: Array<Section>;
 }
 
 export type PageProps<

@@ -56,7 +56,16 @@ class EloquentGroupRepository implements GroupRepository
 
     public function findByMemberId(int $userId): array
     {
-        $groupModels = GroupModel::whereJsonContains('members', $userId)->get();
+        $groupModels = GroupModel::whereHas('members', function ($query) {
+            $query->where('user_id', 1);
+        })->get();
+
+        return $groupModels->map(fn($groupModel) => $groupModel->toGroup())->toArray();
+    }
+
+    public function findByOwnerId(int $userId): array
+    {
+        $groupModels = GroupModel::where('user_id', $userId)->get();
 
         return $groupModels->map(fn($groupModel) => $groupModel->toGroup())->toArray();
     }
