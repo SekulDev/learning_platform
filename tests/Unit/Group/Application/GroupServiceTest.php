@@ -16,14 +16,17 @@ use App\Group\Domain\Dto\CreateGroupDTO;
 use App\Group\Domain\Dto\DeleteGroupDTO;
 use App\Group\Domain\Dto\GroupDTO;
 use App\Group\Domain\Dto\RemoveMemberFromGroupDTO;
+use App\Group\Domain\Jobs\GroupDispatcher;
 use App\Group\Domain\Models\Group;
 use App\Group\Infrastructure\Persistence\Repositories\Local\LocalGroupRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
 class GroupServiceTest extends TestCase
 {
     private LocalGroupRepository $groupRepository;
     private UserRepository $userRepository;
+    private MockObject|GroupDispatcher $groupDispatcher;
     private GroupService $groupService;
 
     private User $adminUser;
@@ -34,8 +37,9 @@ class GroupServiceTest extends TestCase
         parent::setUp();
         $this->groupRepository = new LocalGroupRepository();
         $this->userRepository = new LocalUserRepository();
+        $this->groupDispatcher = $this->createMock(GroupDispatcher::class);
 
-        $this->groupService = new GroupService($this->groupRepository, $this->userRepository);
+        $this->groupService = new GroupService($this->groupRepository, $this->userRepository, $this->groupDispatcher);
 
         $this->adminUser = new User(1, 'admin', new Email('admin@test.com'), Password::fromPlainText('password'), ['user', 'admin']);
         $this->regularUser = new User(2, 'user', new Email('user@test.com'), Password::fromPlainText('password'), ['user']);
