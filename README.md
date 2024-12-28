@@ -127,7 +127,7 @@ To run PHPUnit tests:
 php artisan test
 ```
 
-## Deployment
+## Deployment (⚠️ NOT FINISHED YED ⚠️)
 
 Configure environment and put your variables into `.env`
 
