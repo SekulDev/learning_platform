@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-function getJwtFromCookies(): string | null {
+export function getJwtFromCookies(): string | null {
     const KEY = "jwt";
     return (
         decodeURIComponent(

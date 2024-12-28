@@ -89,7 +89,6 @@ const columns: ColumnDef<Data>[] = [
                     toast({
                         title: "Member removed",
                     });
-                    console.log(data.key);
                     queryClient.invalidateQueries({ queryKey: [data.key] });
                 },
                 onError: () => {

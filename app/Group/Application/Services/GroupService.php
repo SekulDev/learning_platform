@@ -10,13 +10,15 @@ use App\Group\Domain\Dto\CreateGroupDTO;
 use App\Group\Domain\Dto\DeleteGroupDTO;
 use App\Group\Domain\Dto\GroupDTO;
 use App\Group\Domain\Dto\RemoveMemberFromGroupDTO;
+use App\Group\Domain\Dto\UserAddedToGroupDTO;
 use App\Group\Domain\Exceptions\GroupException;
+use App\Group\Domain\Jobs\GroupDispatcher;
 use App\Group\Domain\Models\Group;
 use App\Group\Domain\Repositories\GroupRepository;
 
 class GroupService
 {
-    public function __construct(private GroupRepository $groupRepository, private UserRepository $userRepository)
+    public function __construct(private GroupRepository $groupRepository, private UserRepository $userRepository, private GroupDispatcher $groupDispatcher)
     {
     }
 
@@ -73,6 +75,8 @@ class GroupService
         $group->addMember($user);
 
         $this->groupRepository->save($group);
+
+        $this->groupDispatcher->dispatchUserAddedToGroup(new UserAddedToGroupDTO($user->getId(), GroupDTO::fromGroup($group)));
     }
 
     public function removeMemberFromGroup(RemoveMemberFromGroupDTO $removeMemberDTO): void

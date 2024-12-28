@@ -27,9 +27,11 @@ specifiers:
   class-variance-authority: ^0.7.1
   clsx: ^2.1.1
   concurrently: ^9.0.1
+  laravel-echo: ^1.17.1
   laravel-vite-plugin: ^1.0
   lucide-react: ^0.469.0
   postcss: ^8.4.31
+  pusher-js: 8.4.0-rc2
   react: ^18.2.0
   react-dom: ^18.2.0
   react-hook-form: ^7.54.2
@@ -74,8 +76,10 @@ devDependencies:
   autoprefixer: 10.4.20_postcss@8.4.49
   axios: 1.7.9
   concurrently: 9.1.1
+  laravel-echo: 1.17.1
   laravel-vite-plugin: 1.1.1_vite@6.0.6
   postcss: 8.4.49
+  pusher-js: 8.4.0-rc2
   react: 18.3.1
   react-dom: 18.3.1_react@18.3.1
   tailwindcss: 3.4.17
@@ -2191,6 +2195,11 @@ packages:
     hasBin: true
     dev: true
 
+  /laravel-echo/1.17.1:
+    resolution: {integrity: sha512-ORWc4vDfnBj/Oe5ThZ5kYyGItRjLDqAQUyhD/7UhehUOqc+s5x9HEBjtMVludNMP6VuXw6t7Uxt8bp63kaTofg==}
+    engines: {node: '>=10'}
+    dev: true
+
   /laravel-vite-plugin/1.1.1_vite@6.0.6:
     resolution: {integrity: sha512-HMZXpoSs1OR+7Lw1+g4Iy/s3HF3Ldl8KxxYT2Ot8pEB4XB/QRuZeWgDYJdu552UN03YRSRNK84CLC9NzYRtncA==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -2423,6 +2432,12 @@ packages:
 
   /proxy-from-env/1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: true
+
+  /pusher-js/8.4.0-rc2:
+    resolution: {integrity: sha512-d87GjOEEl9QgO5BWmViSqW0LOzPvybvX6WA9zLUstNdB57jVJuR27zHkRnrav2a3+zAMlHbP2Og8wug+rG8T+g==}
+    dependencies:
+      tweetnacl: 1.0.3
     dev: true
 
   /qs/6.13.1:
@@ -2789,6 +2804,10 @@ packages:
 
   /tslib/2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
+
+  /tweetnacl/1.0.3:
+    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
+    dev: true
 
   /typescript/5.7.2:
     resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
