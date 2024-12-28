@@ -51,17 +51,17 @@ Key architectural decisions:
 
 ### Lesson Creation
 
-- Full Markdown editor support
-- Text formatting capabilities
-- Image insertion
-- Syntax highlighting for code snippets
-- Scheduled publishing
-- Group-specific access control
+- Full Markdown editor support (not implemented yet)
+- Text formatting capabilities (not implemented yet)
+- Image insertion (not implemented yet)
+- Syntax highlighting for code snippets (not implemented yet)
+- Scheduled publishing (not implemented yet)
+- Group-specific access control (not implemented yet)
 
 ### User Features
 
-- Access to authorized lessons
-- Real-time notifications for new lessons
+- Access to authorized lessons (not implemented yet)
+- Real-time notifications for new lessons (not implemented yet)
 
 ## Development Setup
 
@@ -127,7 +127,7 @@ To run PHPUnit tests:
 php artisan test
 ```
 
-## Deployment (⚠️ NOT FINISHED YED ⚠️)
+## Deployment (⚠️ not finished yet)
 
 Configure environment and put your variables into `.env`
 
@@ -158,6 +158,7 @@ constraints and scope, some decisions were made to optimize development speed:
 
 ### Areas for Improvement
 
+- Not finished all features
 - Missing integration and E2E tests (only unit tests present)
 - Insufficient abstraction level in some cases
 - Lack of comprehensive documentation
