@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app1
+      - app2
+    networks:
+      - app-network
+
+  app1: &app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        LARAVEL_ENV_FILE_NAME: ${LARAVEL_ENV_FILE_NAME}
+    container_name: laravel_app1
+    restart: unless-stopped
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+      - redis
+
+  app2:
+    <<: *app
+    container_name: laravel_app2
+
+  queue_worker1: &queue
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        LARAVEL_ENV_FILE_NAME: ${LARAVEL_ENV_FILE_NAME}
+    container_name: queue_worker1
+    restart: unless-stopped
+    command: php artisan queue:work
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+      - redis
+
+  queue_worker2:
+    <<: *queue
+    container_name: queue_worker2
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        LARAVEL_ENV_FILE_NAME: ${LARAVEL_ENV_FILE_NAME}
+    container_name: scheduler
+    restart: unless-stopped
+    command: php artisan schedule:work
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

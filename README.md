@@ -129,10 +129,23 @@ php artisan test
 
 ## Deployment
 
+Configure environment and put your variables into `.env`
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
 To deploy using Docker:
 
 ```bash
-docker-compose up -d --build
+docker-compose --env-file .env up -d --build
+```
+
+Run Migrations in docker and then restart containers
+
+```bash
+docker-compose exec -w /var/www/html app1 php artisan migrate
 ```
 
 ## Project Status
