@@ -35,6 +35,7 @@ class SectionServiceTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->lesson = new Lesson(5, 'test lesson', 'test lesson content');
 
         $this->adminUser = new User(1, 'admin', new Email('admin@test.com'), Password::fromPlainText('password'), ['user', 'admin']);
