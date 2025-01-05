@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/Components/ui/card";
-import { Input } from "@/Components/ui/input";
+import { Input, PasswordInput } from "@/Components/ui/input";
 import { Head, Link } from "@inertiajs/react";
 import { GithubIcon } from "lucide-react";
 import { useCallback } from "react";
@@ -127,8 +127,7 @@ export function LoginForm({
                                                         Password
                                                     </FormLabel>
                                                     <FormControl>
-                                                        <Input
-                                                            type="password"
+                                                        <PasswordInput
                                                             placeholder="password"
                                                             {...field}
                                                         />

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { Input } from "@/Components/ui/input";
+import { Input, PasswordInput } from "@/Components/ui/input";
 import { Head, Link } from "@inertiajs/react";
 import { register, registerFormSchema } from "@/services/auth-service";
 import { useForm } from "react-hook-form";
@@ -102,7 +102,7 @@ export function RegisterForm({
                                                         Password
                                                     </FormLabel>
                                                     <FormControl>
-                                                        <Input
+                                                        <PasswordInput
                                                             type="password"
                                                             placeholder="password"
                                                             {...field}
