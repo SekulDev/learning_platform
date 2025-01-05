@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Auth\Infrastructure\Broadcasting;
+namespace App\Notification\Infrastructure\Broadcasting;
 
-use App\Auth\Domain\Dto\NotifyUserDTO;
+use App\Notification\Domain\Dto\NotifyUserDTO;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -16,18 +16,21 @@ class NotifyUserEvent implements ShouldBroadcast
     {
     }
 
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
         return ['private-user-notify.' . $this->notifyUserDTO->userId];
     }
 
-    public function broadcastAs()
+    public function broadcastAs(): string
     {
         return $this->notifyUserDTO->eventName;
     }
 
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
-        return $this->notifyUserDTO->metadata;
+        return [
+            'id' => $this->notifyUserDTO->id,
+            'metadata' => $this->notifyUserDTO->metadata
+        ];
     }
 }

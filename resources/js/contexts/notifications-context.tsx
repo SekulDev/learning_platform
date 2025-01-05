@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useGroups } from "@/contexts/groups-context";
 import { usePage } from "@inertiajs/react";
 import Pusher from "pusher-js";
 import Echo from "laravel-echo";
 import { getJwtFromCookies } from "@/services/instance";
-import { listen } from "@/services/notify-service";
+import { getUnreadedCount, listen } from "@/services/notify-service";
 import { useToast } from "@/hooks/use-toast";
 
 window.Pusher = Pusher;
@@ -41,8 +41,18 @@ const useProviderNotifications = () => {
 
     const { toast } = useToast();
 
+    const [unreadedCount, setUnreadedCount] = useState<number>(0);
+
     // @ts-ignore
     const auth = usePage().props.auth.user;
+
+    useEffect(() => {
+        const load = async () => {
+            setUnreadedCount(await getUnreadedCount());
+        };
+
+        load();
+    }, []);
 
     useEffect(() => {
         const channels = [
@@ -65,7 +75,20 @@ const useProviderNotifications = () => {
         };
     }, [groups, auth]);
 
-    return {};
+    return {
+        unreadedCount,
+        setUnreadedCount,
+    };
 };
 
 type NotificationsContextProvider = ReturnType<typeof useProviderNotifications>;
+
+export const useNotifications = () => {
+    const notifications = useContext(NotificationsContext);
+    if (!notifications) {
+        throw new Error(
+            "useNotifications must be used inside NotificationsProvider",
+        );
+    }
+    return notifications;
+};

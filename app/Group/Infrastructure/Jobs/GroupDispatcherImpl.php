@@ -2,9 +2,10 @@
 
 namespace App\Group\Infrastructure\Jobs;
 
-use App\Auth\Infrastructure\Jobs\NotifyUser;
 use App\Group\Domain\Dto\UserAddedToGroupDTO;
+use App\Group\Domain\Dto\UserRemovedFromGroupDTO;
 use App\Group\Domain\Jobs\GroupDispatcher;
+use App\Notification\Infrastructure\Jobs\NotifyUser;
 
 class GroupDispatcherImpl implements GroupDispatcher
 {
@@ -15,4 +16,12 @@ class GroupDispatcherImpl implements GroupDispatcher
             "group" => $userAddedToGroupDTO->group,
         ]);
     }
+
+    public function dispatchUserRemovedFromGroup(UserRemovedFromGroupDTO $userRemovedFromGroupDTO): void
+    {
+        NotifyUser::dispatch($userRemovedFromGroupDTO->userId, "user_removed_from_group", [
+            "group" => $userRemovedFromGroupDTO->group,
+        ]);
+    }
+
 }

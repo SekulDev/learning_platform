@@ -2,6 +2,7 @@
 
 use App\Auth\Infrastructure\Http\Controllers\AuthController;
 use App\Group\Infrastructure\Http\Controllers\GroupController;
+use App\Notification\Infrastructure\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -27,6 +28,14 @@ Route::middleware('api.auth')->group(function () {
         Route::delete('/{id}/member/{userId}', [GroupController::class, 'removeMemberFromGroup']);
 
         Route::get('/owner', [GroupController::class, 'getOwnedGroups']);
+    });
+
+    Route::prefix('notification')->group(function () {
+        Route::get('/', [NotificationController::class, 'getNotifications']);
+        Route::get('/count', [NotificationController::class, 'getUnreadedCount']);
+
+        Route::post('/{id}/read', [NotificationController::class, 'readNotification']);
+        Route::post('/read-all', [NotificationController::class, 'readAllNotifications']);
     });
 
 });

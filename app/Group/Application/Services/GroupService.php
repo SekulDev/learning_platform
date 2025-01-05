@@ -11,6 +11,7 @@ use App\Group\Domain\Dto\DeleteGroupDTO;
 use App\Group\Domain\Dto\GroupDTO;
 use App\Group\Domain\Dto\RemoveMemberFromGroupDTO;
 use App\Group\Domain\Dto\UserAddedToGroupDTO;
+use App\Group\Domain\Dto\UserRemovedFromGroupDTO;
 use App\Group\Domain\Exceptions\GroupException;
 use App\Group\Domain\Jobs\GroupDispatcher;
 use App\Group\Domain\Models\Group;
@@ -92,6 +93,8 @@ class GroupService
         $group->removeMember($user);
 
         $this->groupRepository->save($group);
+
+        $this->groupDispatcher->dispatchUserRemovedFromGroup(new UserRemovedFromGroupDTO($user->getId(), GroupDTO::fromGroup($group)));
     }
 
     public function getMembers(int $groupId, UserDTO $user): array
