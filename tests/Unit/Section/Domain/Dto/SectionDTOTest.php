@@ -4,6 +4,7 @@ namespace Section\Domain\Dto;
 
 use App\Section\Domain\Dto\LessonDTO;
 use App\Section\Domain\Dto\SectionDTO;
+use App\Section\Domain\Dto\SimpleLessonDTO;
 use App\Section\Domain\Models\Lesson;
 use App\Section\Domain\Models\Section;
 use Tests\TestCase;
@@ -61,6 +62,7 @@ class SectionDTOTest extends TestCase
         $section = new Section($this->id, $this->name, $this->owner_id, [
             new Lesson(1, "test lesson", "test lesson content"),
         ]);
+        $lessons = array_map(fn($lesson) => SimpleLessonDTO::fromLesson($lesson), $section->getLessons());
 
         $dto = SectionDTO::fromSection($section);
 
@@ -68,6 +70,6 @@ class SectionDTOTest extends TestCase
         $this->assertEquals($section->getId(), $dto->id);
         $this->assertEquals($section->getName(), $dto->name);
         $this->assertEquals($section->getOwnerId(), $dto->owner_id);
-        $this->assertEquals(array_map(fn($l) => $l->toArray(), $section->getLessons()), array_map(fn($l) => $l->toArray(), $dto->lessons));
+        $this->assertEquals(array_map(fn($l) => $l->toArray(), $lessons), array_map(fn($l) => $l->toArray(), $dto->lessons));
     }
 }
