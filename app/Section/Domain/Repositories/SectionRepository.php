@@ -23,4 +23,6 @@ interface SectionRepository
      * @return Section[]
      */
     public function findSections(int $userId): array;
+
+    public function deleteLesson(int $lessonId): bool;
 }

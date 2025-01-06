@@ -26,6 +26,7 @@ import {
     DialogTrigger,
 } from "@/Components/ui/dialog";
 import { AddMemberForm } from "@/Components/admin/add-member-form";
+import { useConfirm } from "@omit/react-confirm-dialog";
 
 type Data = {
     key: string;
@@ -80,6 +81,7 @@ const columns: ColumnDef<Data>[] = [
         cell: ({ row }) => {
             const data = row.original;
             const queryClient = useQueryClient();
+            const confirm = useConfirm();
             const { toast } = useToast();
 
             const removeMember = useMutation({
@@ -98,6 +100,25 @@ const columns: ColumnDef<Data>[] = [
                 },
             });
 
+            async function onRemoveMember() {
+                const isConfirmed = await confirm({
+                    title: "Remove member",
+                    description: `Are you sure you want to remove ${data.name} from group?`,
+                    confirmText: "Delete",
+                    cancelText: "Cancel",
+                    cancelButton: {
+                        variant: "outline",
+                    },
+                });
+
+                if (isConfirmed) {
+                    removeMember.mutate({
+                        id: data.groupId,
+                        userId: data.id,
+                    });
+                }
+            }
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -109,14 +130,7 @@ const columns: ColumnDef<Data>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={() =>
-                                removeMember.mutate({
-                                    id: data.groupId,
-                                    userId: data.id,
-                                })
-                            }
-                        >
+                        <DropdownMenuItem onClick={onRemoveMember}>
                             Delete
                         </DropdownMenuItem>
                     </DropdownMenuContent>

@@ -7,7 +7,7 @@ export interface User {
 
 export interface Lesson {
     id: number;
-    name: string;
+    title: string;
 }
 
 export interface Section {

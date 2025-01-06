@@ -62,6 +62,12 @@ class EloquentSectionRepository implements SectionRepository
     {
         $sections = SectionModel::with(['lessons'])->where('owner_id', $userId)->get();
 
-        return array_map(fn($section) => $section->toSection(), $sections->toArray());
+        return $sections->map(fn($section) => $section->toSection())->toArray();
+    }
+
+    public function deleteLesson(int $lessonId): bool
+    {
+        LessonModel::destroy($lessonId);
+        return true;
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Auth\Infrastructure\Http\Controllers\AuthController;
 use App\Group\Infrastructure\Http\Controllers\GroupController;
+use App\Section\Infrastructure\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -25,5 +26,11 @@ Route::middleware('web.auth')->group(function () {
 
     Route::prefix('group')->group(function () {
         Route::get('/{id}/member', [GroupController::class, 'showGroupMembers']);
+    });
+
+    Route::prefix('section')->group(function () {
+        Route::prefix('{id}/lesson')->group(function () {
+            Route::get('{lessonId}/edit', [SectionController::class, 'showLessonEditorPage']);
+        });
     });
 });

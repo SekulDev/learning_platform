@@ -21,7 +21,7 @@ class SectionDTO
             $section->getId(),
             $section->getName(),
             $section->getOwnerId(),
-            array_map(fn($l) => LessonDTO::fromLesson($l), $section->getLessons())
+            array_map(fn($l) => SimpleLessonDTO::fromLesson($l), $section->getLessons())
         );
     }
 

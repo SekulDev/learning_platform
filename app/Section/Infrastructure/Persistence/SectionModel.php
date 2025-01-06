@@ -17,7 +17,7 @@ class SectionModel extends Model
 
     public function lessons(): HasMany
     {
-        return $this->hasMany(LessonModel::class);
+        return $this->hasMany(LessonModel::class, 'section_id');
     }
 
     public function toSection(): Section

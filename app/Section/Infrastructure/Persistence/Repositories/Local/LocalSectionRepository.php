@@ -70,4 +70,15 @@ class LocalSectionRepository implements SectionRepository
     {
         return array_filter($this->sections, fn(Section $section) => $section->getOwnerId() === $userId);
     }
+
+    public function deleteLesson(int $lessonId): bool
+    {
+        foreach ($this->sections as $i => $section) {
+            $lessons = array_filter($section->getLessons(), fn(Lesson $lesson) => $lesson->getId() !== $lessonId);
+
+            $this->sections[$i] = new Section($section->getId(), $section->getName(), $section->getOwnerId(), $lessons);
+        }
+
+        return true;
+    }
 }

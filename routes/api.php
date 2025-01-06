@@ -3,6 +3,7 @@
 use App\Auth\Infrastructure\Http\Controllers\AuthController;
 use App\Group\Infrastructure\Http\Controllers\GroupController;
 use App\Notification\Infrastructure\Http\Controllers\NotificationController;
+use App\Section\Infrastructure\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -36,6 +37,19 @@ Route::middleware('api.auth')->group(function () {
 
         Route::post('/{id}/read', [NotificationController::class, 'readNotification']);
         Route::post('/read-all', [NotificationController::class, 'readAllNotifications']);
+    });
+
+    Route::prefix('section')->group(function () {
+        Route::post('/', [SectionController::class, 'createSection']);
+        Route::delete('/{id}', [SectionController::class, 'removeSection']);
+
+
+        Route::prefix('{id}/lesson')->group(function () {
+            Route::post('/', [SectionController::class, 'createLesson']);
+            Route::delete('/{lessonId}', [SectionController::class, 'removeLesson']);
+        });
+
+        Route::get('/owner', [SectionController::class, 'getOwnedSections']);
     });
 
 });

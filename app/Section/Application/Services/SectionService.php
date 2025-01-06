@@ -5,7 +5,9 @@ namespace App\Section\Application\Services;
 use App\Auth\Domain\Repositories\UserRepository;
 use App\Section\Domain\Dto\CreateLessonDTO;
 use App\Section\Domain\Dto\CreateSectionDTO;
+use App\Section\Domain\Dto\GetLessonPageDataDTO;
 use App\Section\Domain\Dto\LessonDTO;
+use App\Section\Domain\Dto\RemoveLessonDTO;
 use App\Section\Domain\Dto\RemoveSectionDTO;
 use App\Section\Domain\Dto\SectionDTO;
 use App\Section\Domain\Dto\UpdateLessonDTO;
@@ -13,6 +15,7 @@ use App\Section\Domain\Exceptions\SectionException;
 use App\Section\Domain\Models\Lesson;
 use App\Section\Domain\Models\Section;
 use App\Section\Domain\Repositories\SectionRepository;
+use Exception;
 
 class SectionService
 {
@@ -92,10 +95,48 @@ class SectionService
         return LessonDTO::fromLesson($lesson);
     }
 
-    public function getSections(int $userId): array
+    public function removeLesson(RemoveLessonDTO $removeLessonDTO): void
+    {
+        $this->checkPermissions($removeLessonDTO->user->id, $removeLessonDTO->sectionId);
+
+        $lesson = $this->sectionRepository->findLessonById($removeLessonDTO->lessonId);
+        if (!$lesson) {
+            throw SectionException::lessonNotExists();
+        }
+
+        $this->sectionRepository->deleteLesson($lesson->getId());
+
+        return;
+    }
+
+    public function getOwnedSections(int $userId): array
     {
         $sections = $this->sectionRepository->findSections($userId);
 
         return array_map(fn($section) => SectionDTO::fromSection($section), $sections);
+    }
+
+    public function getDataForLessonPage(GetLessonPageDataDTO $getLessonPageDataDTO)
+    {
+        if ($getLessonPageDataDTO->isEditor) {
+            $this->checkPermissions($getLessonPageDataDTO->user->id, $getLessonPageDataDTO->sectionId);
+
+            $section = $this->sectionRepository->findById($getLessonPageDataDTO->sectionId);
+            if (!$section) {
+                throw SectionException::sectionNotExists();
+            }
+
+            $lesson = $this->sectionRepository->findLessonById($getLessonPageDataDTO->lessonId);
+            if (!$lesson) {
+                throw SectionException::lessonNotExists();
+            }
+
+            return [
+                'section' => SectionDTO::fromSection($section),
+                'lesson' => LessonDTO::fromLesson($lesson),
+            ];
+        } else {
+            throw new Exception("Not implemented yet");
+        }
     }
 }

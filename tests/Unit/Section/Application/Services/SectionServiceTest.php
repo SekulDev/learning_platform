@@ -12,7 +12,9 @@ use App\Common\Domain\ValueObjects\Password;
 use App\Section\Application\Services\SectionService;
 use App\Section\Domain\Dto\CreateLessonDTO;
 use App\Section\Domain\Dto\CreateSectionDTO;
+use App\Section\Domain\Dto\GetLessonPageDataDTO;
 use App\Section\Domain\Dto\LessonDTO;
+use App\Section\Domain\Dto\RemoveLessonDTO;
 use App\Section\Domain\Dto\RemoveSectionDTO;
 use App\Section\Domain\Dto\SectionDTO;
 use App\Section\Domain\Dto\UpdateLessonDTO;
@@ -127,16 +129,46 @@ class SectionServiceTest extends TestCase
         $this->assertEquals('Updated Content', $result->content);
     }
 
-    public function testGetSections(): void
+    public function testRemoveLesson(): void
+    {
+        $this->sectionRepository->save($this->section);
+        $lesson = new Lesson(5, 'Original Title', 'Original Content');
+        $this->sectionRepository->saveLesson($lesson, $this->section->getId());
+
+        $removeLessonDTO = new RemoveLessonDTO($this->section->getId(), $lesson->getId(), UserDTO::fromUser($this->adminUser));
+
+        $this->sectionService->removeLesson($removeLessonDTO);
+
+        $this->assertNull($this->sectionRepository->findLessonById($lesson->getId()));
+        $this->assertEmpty($this->sectionRepository->findById($this->section->getId())->getLessons());
+    }
+
+    public function testGetOwnedSections(): void
     {
         $this->sectionRepository->save($this->section);
         $section2 = new Section(2, 'Another Section', $this->adminUser->getId());
         $this->sectionRepository->save($section2);
 
-        $result = $this->sectionService->getSections($this->adminUser->getId());
+        $result = $this->sectionService->getOwnedSections($this->adminUser->getId());
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
         $this->assertContainsOnlyInstancesOf(SectionDTO::class, $result);
+    }
+
+    public function testGetDataForLessonPageEditor(): void
+    {
+        $this->sectionRepository->save($this->section);
+
+        $getLessonPageDataDTO = new GetLessonPageDataDTO($this->section->getId(), $this->lesson->getId(), UserDTO::fromUser($this->adminUser), true);
+
+        $expected = [
+            'section' => SectionDTO::fromSection($this->section),
+            'lesson' => LessonDTO::fromLesson($this->lesson),
+        ];
+
+        $result = $this->sectionService->getDataForLessonPage($getLessonPageDataDTO);
+
+        $this->assertEquals($expected, $result);
     }
 }

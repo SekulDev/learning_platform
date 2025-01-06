@@ -16,6 +16,7 @@ import {
     CollapsibleTrigger,
 } from "../ui/collapsible";
 import { ChevronRight, Loader2, SquareTerminal } from "lucide-react";
+import { Link } from "@inertiajs/react";
 
 export default function AppSidebarGroups() {
     const { groups, isGroupLoading, loadSectionsForGroup } = useGroups();
@@ -63,11 +64,11 @@ export default function AppSidebarGroups() {
                                                     <SidebarMenuSubButton
                                                         asChild
                                                     >
-                                                        <a href="#">
+                                                        <Link href="#">
                                                             <span>
                                                                 {section.name}
                                                             </span>
-                                                        </a>
+                                                        </Link>
                                                     </SidebarMenuSubButton>
                                                 </SidebarMenuSubItem>
                                             ))}
