@@ -2,6 +2,7 @@
 
 namespace Auth\Domain\Models;
 
+use App\Auth\Domain\Dto\UpdateUserDTO;
 use App\Auth\Domain\Models\User;
 use App\Common\Domain\ValueObjects\Email;
 use App\Common\Domain\ValueObjects\Password;
@@ -153,5 +154,23 @@ class UserTest extends TestCase
         );
 
         $this->assertFalse($user->isAdmin());
+    }
+
+    public function testUserUpdate(): void
+    {
+        $email = new Email('test@example.com');
+        $password = Password::fromPlaintext($this->plainPassword);
+        $roles = ['user'];
+        $user = new User(
+            id: 1,
+            name: 'John Doe',
+            email: $email,
+            password: $password,
+            roles: $roles
+        );
+
+        $user->update(new UpdateUserDTO(1, "New Name"));
+
+        $this->assertEquals("New Name", $user->getName());
     }
 }

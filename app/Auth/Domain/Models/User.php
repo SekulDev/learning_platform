@@ -2,6 +2,8 @@
 
 namespace App\Auth\Domain\Models;
 
+use App\Auth\Domain\Dto\UpdateUserDTO;
+use App\Auth\Domain\Exceptions\AuthenticationException;
 use App\Common\Domain\AggregateRoot;
 use App\Common\Domain\ValueObjects\Email;
 use App\Common\Domain\ValueObjects\Password;
@@ -94,5 +96,13 @@ class User extends AggregateRoot
     public function getProviderId(): ?string
     {
         return $this->providerId;
+    }
+
+    public function update(UpdateUserDTO $data)
+    {
+        if ($data->userId !== $this->getId()) {
+            throw AuthenticationException::invalidCredentials();
+        }
+        $this->name = $data->name;
     }
 }

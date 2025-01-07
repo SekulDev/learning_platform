@@ -3,8 +3,11 @@
 namespace App\Auth\Infrastructure\Http\Controllers;
 
 use App\Auth\Application\Services\AuthService;
+use App\Auth\Domain\Dto\UpdateUserDTO;
+use App\Auth\Domain\Dto\UserDTO;
 use App\Auth\Infrastructure\Http\Requests\LoginRequest;
 use App\Auth\Infrastructure\Http\Requests\RegisterRequest;
+use App\Auth\Infrastructure\Http\Requests\UpdateUserRequest;
 use App\Common\Domain\Exceptions\BadRequestException;
 use App\Common\Infrastructure\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
@@ -73,5 +76,15 @@ class AuthController extends Controller
     {
         auth()->logout();
         return response()->json(['message' => 'Successfully logged out'])->cookie('jwt', null, -1000);
+    }
+
+    public function update(UpdateUserRequest $request): JsonResponse
+    {
+        /** @var UserDTO $me */
+        $me = auth()->user();
+
+        $user = $this->authService->updateUser(new UpdateUserDTO($me->id, $request->name));
+
+        return response()->json($user);
     }
 }

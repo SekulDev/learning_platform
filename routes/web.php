@@ -14,6 +14,7 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Register');
 });
 
+
 Route::prefix('auth')->group(function () {
     Route::get('{provider}', [AuthController::class, 'redirectToProvider']);
     Route::get('{provider}/callback', [AuthController::class, 'handleProviderCallback']);
@@ -22,6 +23,10 @@ Route::prefix('auth')->group(function () {
 Route::middleware('web.auth')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Dashboard');
+    });
+
+    Route::get('profile', function () {
+        return Inertia::render('Profile');
     });
 
     Route::prefix('group')->group(function () {

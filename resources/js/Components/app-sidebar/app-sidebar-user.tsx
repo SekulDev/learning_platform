@@ -31,6 +31,7 @@ import { useNotifications } from "@/contexts/notifications-context";
 import React, { useEffect, useState } from "react";
 import NotificationsPopover from "@/Components/notifications/notifications-popover";
 import { cn } from "@/lib/utils";
+import { Link } from "@inertiajs/react";
 
 export default function AppSidebarUser({ user }: { user: User }) {
     const { isMobile } = useSidebar();
@@ -105,9 +106,11 @@ export default function AppSidebarUser({ user }: { user: User }) {
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <BadgeCheck />
-                                        Account
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/profile">
+                                            <BadgeCheck />
+                                            Account
+                                        </Link>
                                     </DropdownMenuItem>
 
                                     <DropdownMenuItem

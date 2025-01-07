@@ -3,6 +3,7 @@
 namespace App\Auth\Application\Services;
 
 use App\Auth\Domain\Dto\AuthResponseDTO;
+use App\Auth\Domain\Dto\UpdateUserDTO;
 use App\Auth\Domain\Dto\UserDTO;
 use App\Auth\Domain\Exceptions\AuthenticationException;
 use App\Auth\Domain\Models\User;
@@ -77,5 +78,19 @@ class AuthService
 
 
         return Cookie::make('jwt', $authResponse->accessToken, $authResponse->expiresIn, null, null, $SECURE, $HTTP_ONLY);
+    }
+
+    public function updateUser(UpdateUserDTO $updateUserDTO): UserDTO
+    {
+        $user = $this->userRepository->findById($updateUserDTO->userId);
+        if (!$user) {
+            throw AuthenticationException::userNotFound();
+        }
+
+        $user->update($updateUserDTO);
+
+        $user = $this->userRepository->save($user);
+
+        return UserDTO::fromUser($user);
     }
 }

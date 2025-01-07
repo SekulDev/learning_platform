@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { instance } from "@/services/instance";
+import { User } from "@/types";
 
 export interface AuthResponse {
     access_token: string;
@@ -51,6 +52,21 @@ export async function logout() {
     try {
         await instance.post("/auth/logout");
         window.location.href = "/";
+    } catch (e) {
+        return null;
+    }
+}
+
+export const updateUserFormSchema = z.object({
+    name: z.string().min(2).max(250),
+});
+
+export async function updateUser(data: z.infer<typeof updateUserFormSchema>) {
+    try {
+        const { data: result } = await instance.put<User>("/auth/me", {
+            ...data,
+        });
+        return result;
     } catch (e) {
         return null;
     }
