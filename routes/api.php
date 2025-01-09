@@ -2,6 +2,7 @@
 
 use App\Auth\Infrastructure\Http\Controllers\AuthController;
 use App\Group\Infrastructure\Http\Controllers\GroupController;
+use App\Media\Infrastructure\Http\Controllers\MediaController;
 use App\Notification\Infrastructure\Http\Controllers\NotificationController;
 use App\Section\Infrastructure\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,10 @@ Route::middleware('api.auth')->group(function () {
         });
 
         Route::get('/owner', [SectionController::class, 'getOwnedSections']);
+    });
+
+    Route::prefix('media')->group(function () {
+        Route::post('/', [MediaController::class, 'uploadMedia']);
     });
 
 });
