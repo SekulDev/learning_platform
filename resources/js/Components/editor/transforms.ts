@@ -5,8 +5,8 @@ import type { PlateEditor } from "@udecode/plate/react";
 import {
     type NodeEntry,
     type Path,
-    type TElement,
     PathApi,
+    type TElement,
 } from "@udecode/plate";
 import { insertCallout } from "@udecode/plate-callout";
 import { CalloutPlugin } from "@udecode/plate-callout/react";
@@ -94,7 +94,8 @@ const insertBlockMap: Record<
         }),
     [TablePlugin.key]: (editor) =>
         editor.getTransforms(TablePlugin).insert.table({}, { select: true }),
-    [TocPlugin.key]: (editor) => insertToc(editor, { select: true }),
+    [TocPlugin.key]: (editor) =>
+        insertToc(editor, { select: true, removeEmpty: true }),
     [VideoPlugin.key]: (editor) =>
         insertVideoPlaceholder(editor, { select: true }),
 };
@@ -126,8 +127,6 @@ export const insertBlock = (editor: PlateEditor, type: string) => {
                 select: true,
             });
         }
-
-        editor.tf.removeNodes({ previousEmptyBlock: true });
     });
 };
 

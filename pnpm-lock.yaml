@@ -27,6 +27,7 @@ specifiers:
   '@tanstack/react-table': ^8.20.6
   '@tanstack/react-virtual': ^3.11.2
   '@types/node': ^18.13.0
+  '@types/prismjs': ^1.26.5
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.10
   '@udecode/cmdk': ^0.1.1
@@ -43,6 +44,7 @@ specifiers:
   '@udecode/plate-code-block': ^42.0.0
   '@udecode/plate-combobox': ^42.0.0
   '@udecode/plate-comments': ^42.0.0
+  '@udecode/plate-common': ^42.0.0
   '@udecode/plate-date': ^42.0.0
   '@udecode/plate-dnd': ^42.0.0
   '@udecode/plate-docx': ^42.0.0
@@ -151,6 +153,7 @@ dependencies:
   '@udecode/plate-code-block': 42.0.0_r45ibv25aodvrobstir7qjajye
   '@udecode/plate-combobox': 42.0.0_r45ibv25aodvrobstir7qjajye
   '@udecode/plate-comments': 42.0.0_r45ibv25aodvrobstir7qjajye
+  '@udecode/plate-common': 42.0.0_nnrd3gsncyragczmpvfhocinkq
   '@udecode/plate-date': 42.0.0_r45ibv25aodvrobstir7qjajye
   '@udecode/plate-dnd': 42.0.0_mpsigjo4a4jmwjrsh5sxwhig64
   '@udecode/plate-docx': 42.0.0_r45ibv25aodvrobstir7qjajye
@@ -214,6 +217,7 @@ devDependencies:
   '@inertiajs/react': 2.0.0_react@18.3.1
   '@tailwindcss/forms': 0.5.9_tailwindcss@3.4.17
   '@types/node': 18.19.68
+  '@types/prismjs': 1.26.5
   '@types/react': 18.3.18
   '@types/react-dom': 18.3.5_@types+react@18.3.18
   '@vitejs/plugin-react': 4.3.4_vite@6.0.6
@@ -2141,6 +2145,10 @@ packages:
     dependencies:
       undici-types: 5.26.5
 
+  /@types/prismjs/1.26.5:
+    resolution: {integrity: sha512-AUZTa7hQ2KY5L7AmtSiqxlhWxb4ina0yd8hNbl4TWuqnv/pFP0nDMb3YrfSBf4hJVGLh2YEIBfKaBW/9UEl6IQ==}
+    dev: true
+
   /@types/prop-types/15.7.14:
     resolution: {integrity: sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ==}
 
@@ -2333,6 +2341,17 @@ packages:
     dependencies:
       '@udecode/plate': 42.0.0_ck2ap7ofk76kidkkm4uczg65xi
       lodash: 4.17.21
+      react: 18.3.1
+      react-dom: 18.3.1_react@18.3.1
+    dev: false
+
+  /@udecode/plate-common/42.0.0_nnrd3gsncyragczmpvfhocinkq:
+    resolution: {integrity: sha512-Y/0Cpf/OtmyNwRx1dAfLPH23SskTbpVdaffX9rG+BTlQNJV9xZDaYt2n+dM3j4Q5Aqntf5cKO8kWGhISUQFYyw==}
+    deprecated: Package no longer supported, use @udecode/plate instead.
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+    dependencies:
       react: 18.3.1
       react-dom: 18.3.1_react@18.3.1
     dev: false
