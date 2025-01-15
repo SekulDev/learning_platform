@@ -34,7 +34,7 @@ export default function LessonEdit({ section, lesson }: PageProps) {
     ];
 
     //@ts-ignore
-    const editor = useCreateEditor(lesson.content);
+    const editor = useCreateEditor(lesson.content, true);
     editor.api.setNormalizing(true);
 
     const [lessonContent, setLessonContent] = useState<Value>(lesson.content);

@@ -45,9 +45,10 @@ import {
     TableRowPlugin,
 } from "@udecode/plate-table/react";
 import { TogglePlugin } from "@udecode/plate-toggle/react";
-import { editorPlugins } from "@/Components/editor/plugins/editor-plugins";
-import { FixedToolbarPlugin } from "@/Components/editor/plugins/fixed-toolbar-plugin";
-import { FloatingToolbarPlugin } from "@/Components/editor/plugins/floating-toolbar-plugin";
+import {
+    editorPlugins,
+    viewPlugins,
+} from "@/Components/editor/plugins/editor-plugins";
 import { AILeaf } from "@/Components/plate-ui/ai-leaf";
 import { BlockquoteElement } from "@/Components/plate-ui/blockquote-element";
 import { CodeBlockElement } from "@/Components/plate-ui/code-block-element";
@@ -79,7 +80,7 @@ import { Value } from "@udecode/plate";
 import { MediaFileElement } from "@/Components/plate-ui/media-file-element";
 import { MediaPlaceholderElement } from "@/Components/plate-ui/media-placeholder-element";
 
-export const useCreateEditor = (value: Value) => {
+export const useCreateEditor = (value: Value, isEditor?: boolean) => {
     return usePlateEditor({
         override: {
             components: withPlaceholders({
@@ -123,6 +124,6 @@ export const useCreateEditor = (value: Value) => {
             }),
         },
         value: value,
-        plugins: [...editorPlugins, FixedToolbarPlugin, FloatingToolbarPlugin],
+        plugins: [...(isEditor ? editorPlugins : viewPlugins)],
     });
 };

@@ -1,7 +1,6 @@
 "use client";
 
 import { ParagraphPlugin } from "@udecode/plate/react";
-import { CalloutPlugin } from "@udecode/plate-callout/react";
 import { DatePlugin } from "@udecode/plate-date/react";
 import { DocxPlugin } from "@udecode/plate-docx";
 import { EmojiPlugin } from "@udecode/plate-emoji/react";
@@ -10,11 +9,9 @@ import {
     FontColorPlugin,
     FontSizePlugin,
 } from "@udecode/plate-font/react";
-import { HighlightPlugin } from "@udecode/plate-highlight/react";
 import { HorizontalRulePlugin } from "@udecode/plate-horizontal-rule/react";
 import { JuicePlugin } from "@udecode/plate-juice";
 import { KbdPlugin } from "@udecode/plate-kbd/react";
-import { ColumnPlugin } from "@udecode/plate-layout/react";
 import { MarkdownPlugin } from "@udecode/plate-markdown";
 import { SlashPlugin } from "@udecode/plate-slash-command/react";
 import { TogglePlugin } from "@udecode/plate-toggle/react";
@@ -37,7 +34,6 @@ import { indentListPlugins } from "./indent-list-plugins";
 import { lineHeightPlugin } from "./line-height-plugin";
 import { linkPlugin } from "./link-plugin";
 import { mediaPlugins } from "./media-plugins";
-import { mentionPlugin } from "./mention-plugin";
 import { resetBlockTypePlugin } from "./reset-block-type-plugin";
 import { softBreakPlugin } from "./soft-break-plugin";
 import { tablePlugin } from "./table-plugin";
@@ -48,20 +44,16 @@ export const viewPlugins = [
     HorizontalRulePlugin,
     linkPlugin,
     DatePlugin,
-    mentionPlugin,
     tablePlugin,
     TogglePlugin,
     tocPlugin,
     ...mediaPlugins,
     ...equationPlugins,
-    CalloutPlugin,
-    ColumnPlugin,
 
     // Marks
     FontColorPlugin,
     FontBackgroundColorPlugin,
     FontSizePlugin,
-    HighlightPlugin,
     KbdPlugin,
 
     // Block Style

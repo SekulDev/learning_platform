@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 
 import { AIToolbarButton } from "./ai-toolbar-button";
-import { CommentToolbarButton } from "./comment-toolbar-button";
 import { InlineEquationToolbarButton } from "./inline-equation-toolbar-button";
 import { LinkToolbarButton } from "./link-toolbar-button";
 import { MarkToolbarButton } from "./mark-toolbar-button";
@@ -87,11 +86,7 @@ export function FloatingToolbarButtons() {
                 </>
             )}
 
-            <ToolbarGroup>
-                <CommentToolbarButton />
-
-                {!readOnly && <MoreDropdownMenu />}
-            </ToolbarGroup>
+            <ToolbarGroup>{!readOnly && <MoreDropdownMenu />}</ToolbarGroup>
         </>
     );
 }

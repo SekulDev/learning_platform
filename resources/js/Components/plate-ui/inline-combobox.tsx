@@ -1,11 +1,11 @@
 "use client";
 
 import React, {
+    createContext,
+    forwardRef,
     type HTMLAttributes,
     type ReactNode,
     type RefObject,
-    createContext,
-    forwardRef,
     startTransition,
     useCallback,
     useContext,
@@ -17,11 +17,11 @@ import React, {
 import type { PointRef, TElement } from "@udecode/plate";
 
 import {
-    type ComboboxItemProps,
     Combobox,
     ComboboxGroup,
     ComboboxGroupLabel,
     ComboboxItem,
+    type ComboboxItemProps,
     ComboboxPopover,
     ComboboxProvider,
     ComboboxRow,
@@ -33,8 +33,8 @@ import { cn, withCn } from "@udecode/cn";
 import { useComposedRef, useEditorRef } from "@udecode/plate/react";
 import { filterWords } from "@udecode/plate-combobox";
 import {
-    type UseComboboxInputResult,
     useComboboxInput,
+    type UseComboboxInputResult,
     useHTMLInputCursorState,
 } from "@udecode/plate-combobox/react";
 import { cva } from "class-variance-authority";
@@ -254,7 +254,7 @@ const InlineComboboxInput = forwardRef<
                 <Combobox
                     ref={ref}
                     className={cn(
-                        "absolute left-0 top-0 size-full bg-transparent outline-none",
+                        "absolute left-0 top-0 h-full bg-transparent outline-none focus:outline-none focus:border-none border-none focus:ring-0",
                         className,
                     )}
                     value={value}
