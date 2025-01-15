@@ -10,7 +10,7 @@ class Lesson extends AggregateRoot
     public function __construct(
         private int    $id,
         private string $title,
-        private string $content,
+        private array  $content,
     )
     {
     }
@@ -25,15 +25,20 @@ class Lesson extends AggregateRoot
         return $this->title;
     }
 
-    public function getContent(): ?string
+    public function getContent(): ?array
     {
         return $this->content;
     }
 
-    public function updateLesson(string $title, string $content): void
+    public function updateLesson(?string $title, ?array $content): void
     {
-        $this->content = $content;
-        $this->title = $title;
+        if ($content) {
+            $this->content = $content;
+        }
+        if ($title) {
+            $this->title = $title;
+        }
+
     }
 
     public function toArray(): array

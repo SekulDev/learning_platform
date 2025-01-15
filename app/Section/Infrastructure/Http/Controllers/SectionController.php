@@ -10,8 +10,10 @@ use App\Section\Domain\Dto\CreateSectionDTO;
 use App\Section\Domain\Dto\GetLessonPageDataDTO;
 use App\Section\Domain\Dto\RemoveLessonDTO;
 use App\Section\Domain\Dto\RemoveSectionDTO;
+use App\Section\Domain\Dto\UpdateLessonDTO;
 use App\Section\Infrastructure\Http\Requests\CreateLessonRequest;
 use App\Section\Infrastructure\Http\Requests\CreateSectionRequest;
+use App\Section\Infrastructure\Http\Requests\UpdateLessonRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
@@ -57,7 +59,7 @@ class SectionController extends Controller
         /** @var UserDTO $me */
         $me = auth()->user();
 
-        $lesson = $this->sectionService->createLesson(new CreateLessonDTO($id, $request->title, null, $me));
+        $lesson = $this->sectionService->createLesson(new CreateLessonDTO($id, $request->title, $me));
 
         return response()->json($lesson);
     }
@@ -72,6 +74,16 @@ class SectionController extends Controller
         return response()->noContent();
     }
 
+    public function updateLesson(int $id, int $lessonId, UpdateLessonRequest $request): Response
+    {
+        /** @var UserDTO $me */
+        $me = auth()->user();
+
+        $this->sectionService->updateLesson(new UpdateLessonDTO($id, $lessonId, $request->title, $request->content, $me));
+
+        return response()->noContent();
+    }
+
     public function showLessonEditorPage(int $id, int $lessonId)
     {
         /** @var UserDTO $me */
@@ -81,4 +93,5 @@ class SectionController extends Controller
 
         return Inertia::render('Section/LessonEdit', $data);
     }
+
 }

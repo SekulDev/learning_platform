@@ -9,8 +9,8 @@ readonly class UpdateLessonDTO
     public function __construct(
         public readonly int     $sectionId,
         public readonly int     $lessonId,
-        public readonly string  $title,
-        public readonly string  $content,
+        public readonly ?string $title,
+        public readonly ?array  $content,
         public readonly UserDTO $user,
     )
     {

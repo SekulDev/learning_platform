@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->uuid('section_id')->constrained('sections')->cascadeOnDelete();
             $table->string('title');
-            $table->longText('content')->default("");
+            $table->json('content')->default("{}");
             $table->timestamps();
         });
     }

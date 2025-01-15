@@ -1,6 +1,7 @@
-import { queryRequest } from "@/services/instance";
+import { instance, queryRequest } from "@/services/instance";
 import { Lesson, Section } from "@/types";
 import { z } from "zod";
+import { Value } from "@udecode/plate";
 
 export const createSectionSchema = z.object({
     name: z.string().min(2).max(50),
@@ -47,4 +48,25 @@ export async function removeLesson(sectionId: number, id: number) {
         url: `/section/${sectionId}/lesson/${id}`,
         method: "DELETE",
     });
+}
+
+export async function updateLesson(
+    sectionId: number,
+    id: number,
+    title?: string,
+    content?: Value,
+) {
+    try {
+        const { data } = await instance.patch(
+            `/section/${sectionId}/lesson/${id}`,
+            {
+                title,
+                content,
+            },
+        );
+
+        return true;
+    } catch (e) {
+        return null;
+    }
 }

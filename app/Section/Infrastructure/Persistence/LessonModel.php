@@ -17,6 +17,10 @@ class LessonModel extends Model
         'content',
     ];
 
+    protected $casts = [
+        'content' => 'array'
+    ];
+
     public function section(): BelongsTo
     {
         return $this->belongsTo(SectionModel::class);

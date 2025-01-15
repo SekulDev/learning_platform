@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -38,6 +40,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'api.auth' => \App\Auth\Infrastructure\Http\Middleware\JwtAuthMiddleware::class,
         ]);
         $middleware->encryptCookies(except: ['jwt']);
+        $middleware->remove([
+            ConvertEmptyStringsToNull::class,
+            TrimStrings::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\App\Common\Domain\Exceptions\HttpException $e, Request $request) {

@@ -38,7 +38,7 @@ class SectionServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->lesson = new Lesson(5, 'test lesson', 'test lesson content');
+        $this->lesson = new Lesson(5, 'test lesson', ['test lesson content']);
 
         $this->adminUser = new User(1, 'admin', new Email('admin@test.com'), Password::fromPlainText('password'), ['user', 'admin']);
         $this->regularUser = new User(2, 'user', new Email('user@test.com'), Password::fromPlainText('password'), ['user']);
@@ -97,7 +97,6 @@ class SectionServiceTest extends TestCase
         $createLessonDTO = new CreateLessonDTO(
             $this->section->getId(),
             'New Lesson',
-            'Lesson Content',
             UserDTO::fromUser($this->adminUser)
         );
 
@@ -105,20 +104,20 @@ class SectionServiceTest extends TestCase
 
         $this->assertInstanceOf(LessonDTO::class, $result);
         $this->assertEquals('New Lesson', $result->title);
-        $this->assertEquals('Lesson Content', $result->content);
+        $this->assertEquals([], $result->content);
     }
 
     public function testUpdateLesson(): void
     {
         $this->sectionRepository->save($this->section);
-        $lesson = new Lesson(5, 'Original Title', 'Original Content');
+        $lesson = new Lesson(5, 'Original Title', ['Original Content']);
         $this->sectionRepository->saveLesson($lesson, $this->section->getId());
 
         $updateLessonDTO = new UpdateLessonDTO(
             $this->section->getId(),
             $lesson->getId(),
             'Updated Title',
-            'Updated Content',
+            ['Updated Content'],
             UserDTO::fromUser($this->adminUser)
         );
 
@@ -126,13 +125,13 @@ class SectionServiceTest extends TestCase
 
         $this->assertInstanceOf(LessonDTO::class, $result);
         $this->assertEquals('Updated Title', $result->title);
-        $this->assertEquals('Updated Content', $result->content);
+        $this->assertEquals(['Updated Content'], $result->content);
     }
 
     public function testRemoveLesson(): void
     {
         $this->sectionRepository->save($this->section);
-        $lesson = new Lesson(5, 'Original Title', 'Original Content');
+        $lesson = new Lesson(5, 'Original Title', ['Original Content']);
         $this->sectionRepository->saveLesson($lesson, $this->section->getId());
 
         $removeLessonDTO = new RemoveLessonDTO($this->section->getId(), $lesson->getId(), UserDTO::fromUser($this->adminUser));

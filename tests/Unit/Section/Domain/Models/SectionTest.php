@@ -27,7 +27,7 @@ class SectionTest extends TestCase
             new Lesson(
                 1,
                 "Test Lesson",
-                "Test lesson content"
+                ["Test lesson content"]
             )
         ];
         $this->section = new Section(

@@ -11,7 +11,7 @@ class LessonDTOTest extends TestCase
     private int $id;
     private string $title;
 
-    private string $content;
+    private array $content;
 
     private LessonDTO $lesson;
 
@@ -19,7 +19,7 @@ class LessonDTOTest extends TestCase
     {
         $this->id = 1;
         $this->title = 'Test lesson';
-        $this->content = 'Test lesson content';
+        $this->content = ['Test lesson content'];
         $this->lesson = new LessonDTO($this->id, $this->title, $this->content);
     }
 

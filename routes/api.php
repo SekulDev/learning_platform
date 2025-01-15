@@ -49,6 +49,7 @@ Route::middleware('api.auth')->group(function () {
         Route::prefix('{id}/lesson')->group(function () {
             Route::post('/', [SectionController::class, 'createLesson']);
             Route::delete('/{lessonId}', [SectionController::class, 'removeLesson']);
+            Route::patch('/{lessonId}', [SectionController::class, 'updateLesson']);
         });
 
         Route::get('/owner', [SectionController::class, 'getOwnedSections']);

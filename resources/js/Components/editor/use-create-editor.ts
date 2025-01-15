@@ -122,6 +122,7 @@ export const useCreateEditor = (value: Value) => {
                 [UnderlinePlugin.key]: withProps(PlateLeaf, { as: "u" }),
             }),
         },
+        value: value,
         plugins: [...editorPlugins, FixedToolbarPlugin, FloatingToolbarPlugin],
     });
 };

@@ -11,7 +11,7 @@ class LessonTest extends TestCase
     private int $id;
     private string $title;
 
-    private string $content;
+    private array $content;
 
     private Lesson $lesson;
 
@@ -19,7 +19,7 @@ class LessonTest extends TestCase
     {
         $this->id = 1;
         $this->title = 'Test Lesson';
-        $this->content = 'Test Lesson content';
+        $this->content = ['Test Lesson content'];
         $this->lesson = new Lesson(
             $this->id,
             $this->title,

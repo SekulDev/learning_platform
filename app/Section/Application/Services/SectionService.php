@@ -72,7 +72,7 @@ class SectionService
     {
         $this->checkPermissions($createLessonDTO->user->id, $createLessonDTO->sectionId);
 
-        $lesson = new Lesson(0, $createLessonDTO->title, $createLessonDTO->content ?? "");
+        $lesson = new Lesson(0, $createLessonDTO->title, []);
 
         $lesson = $this->sectionRepository->saveLesson($lesson, $createLessonDTO->sectionId);
 
@@ -88,7 +88,7 @@ class SectionService
             throw SectionException::lessonNotExists();
         }
 
-        $lesson->updateLesson($updateLessonDTO->title, $updateLessonDTO->content ?? "");
+        $lesson->updateLesson($updateLessonDTO->title, $updateLessonDTO->content);
 
         $lesson = $this->sectionRepository->saveLesson($lesson, $updateLessonDTO->sectionId);
 

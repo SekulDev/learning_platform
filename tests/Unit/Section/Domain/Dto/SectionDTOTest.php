@@ -26,7 +26,7 @@ class SectionDTOTest extends TestCase
         $this->name = 'test section';
         $this->owner_id = 1;
         $this->lessons = [
-            new LessonDTO(1, "test lesson", "test lesson content"),
+            new LessonDTO(1, "test lesson", ["test lesson content"]),
         ];
 
         $this->section = new SectionDTO($this->id, $this->name, $this->owner_id, $this->lessons);
@@ -60,7 +60,7 @@ class SectionDTOTest extends TestCase
     public function testFromSectionCreatesCorrectDTO(): void
     {
         $section = new Section($this->id, $this->name, $this->owner_id, [
-            new Lesson(1, "test lesson", "test lesson content"),
+            new Lesson(1, "test lesson", ["test lesson content"]),
         ]);
         $lessons = array_map(fn($lesson) => SimpleLessonDTO::fromLesson($lesson), $section->getLessons());
 
