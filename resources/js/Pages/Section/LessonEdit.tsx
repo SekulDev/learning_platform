@@ -1,7 +1,7 @@
 import { Lesson, Path, Section } from "@/types";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Head } from "@inertiajs/react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useCreateEditor } from "@/Components/editor/use-create-editor";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Plate } from "@udecode/plate/react";
@@ -11,6 +11,10 @@ import { Value } from "@udecode/plate";
 import { Toaster } from "@/Components/ui/sonner";
 import { toast } from "sonner";
 import { updateLesson } from "@/services/section-service";
+import { Pencil } from "lucide-react";
+import { cn } from "@/lib/utils";
+import EditLessonDialog from "@/Components/admin/edit-lesson-dialog";
+import { DialogTrigger } from "@/Components/ui/dialog";
 
 interface PageProps {
     section: Section;
@@ -22,16 +26,21 @@ interface FullLesson extends Lesson {
 }
 
 export default function LessonEdit({ section, lesson }: PageProps) {
-    const path: Path[] = [
-        {
-            label: section.name,
-            url: "#",
-        },
-        {
-            label: lesson.title,
-            url: `/section/${section.id}/lesson/${lesson.id}/edit`,
-        },
-    ];
+    const [lessonTitle, setLessonTitle] = useState<string>(lesson.title);
+
+    const path = useMemo<Path[]>(
+        () => [
+            {
+                label: section.name,
+                url: "#",
+            },
+            {
+                label: lessonTitle,
+                url: `/section/${section.id}/lesson/${lesson.id}/edit`,
+            },
+        ],
+        [lessonTitle],
+    );
 
     //@ts-ignore
     const editor = useCreateEditor(lesson.content, true);
@@ -70,12 +79,29 @@ export default function LessonEdit({ section, lesson }: PageProps) {
 
     return (
         <DashboardLayout path={path}>
-            <Head title={`${lesson.title} - ${section.name}`} />
-            <header>
-                <h1 className="text-xl font-semibold">{lesson.title} Editor</h1>
-            </header>
+            <Head title={`${lessonTitle} - ${section.name}`} />
+            <EditLessonDialog
+                section={section}
+                lesson={lesson}
+                currentTitle={lessonTitle}
+                updateTitle={setLessonTitle}
+            >
+                <header>
+                    <DialogTrigger asChild>
+                        <h1 className="text-xl font-semibold hover:underline hover:cursor-pointer group/title">
+                            {lessonTitle}
+                            <Pencil
+                                size="18"
+                                className={cn(
+                                    "ml-2 inline-block opacity-0 group-hover/title:opacity-100 transition-opacity text-muted-foreground",
+                                )}
+                            />
+                        </h1>
+                    </DialogTrigger>
+                </header>
+            </EditLessonDialog>
             <Toaster />
-            <div className="w-full max-w-full mt-2">
+            <div className="w-full max-w-full mt-6">
                 <DndProvider backend={HTML5Backend}>
                     <Plate
                         editor={editor}
