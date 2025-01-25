@@ -51,10 +51,10 @@ Key architectural decisions:
 
 ### Lesson Creation
 
-- Full Markdown editor support (not implemented yet)
-- Text formatting capabilities (not implemented yet)
-- Image insertion (not implemented yet)
-- Syntax highlighting for code snippets (not implemented yet)
+- Full Markdown editor support
+- Text formatting capabilities
+- Image insertion
+- Syntax highlighting for code snippets
 - Scheduled publishing (not implemented yet)
 - Group-specific access control (not implemented yet)
 
